@@ -19,6 +19,11 @@ int main()
 
     auto &mapManager = engine.mapManager();
     auto &map1 = mapManager.create_map("Map 1");
+    auto &map_data = map1.map_data();
+    map_data[sf::Vector2i(1, 3)] = 1;
+    map_data[sf::Vector2i(3, 1)] = 1;
+    map_data[sf::Vector2i(1, 2)] = 1;
+    map_data[sf::Vector2i(2, 1)] = 1;
 
     // Create a text
     sf::Text text("hello", *sansFont);
@@ -61,7 +66,7 @@ int main()
         }
 
         window.clear();
-        window.draw(shape);
+        //window.draw(shape);
         window.draw(text);
         map1.draw(window);
         window.display();
