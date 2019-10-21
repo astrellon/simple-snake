@@ -4,15 +4,6 @@
 
 namespace town
 {
-    FontManager::FontManager()
-    {
-
-    }
-    FontManager::~FontManager()
-    {
-        _fonts.clear();
-    }
-
     const FontManager::FontMap &FontManager::fonts()
     {
         return _fonts;

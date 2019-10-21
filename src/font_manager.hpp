@@ -5,14 +5,13 @@
 #include <string>
 #include <map>
 
+#include "non_copyable.hpp"
+
 namespace town
 {
-    class FontManager
+    class FontManager : private NonCopyable
     {
         public:
-            FontManager();
-            ~FontManager();
-
             typedef std::map<std::string, std::unique_ptr<sf::Font>> FontMap;
             const FontMap &fonts();
 

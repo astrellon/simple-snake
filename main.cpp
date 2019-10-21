@@ -1,7 +1,8 @@
 #include <SFML/Graphics.hpp>
 #include <SFML/System.hpp>
 
-#include "src/font_manager.hpp"
+#include "src/engine.hpp"
+#include "src/map.hpp"
 
 int main()
 {
@@ -9,13 +10,18 @@ int main()
     sf::CircleShape shape(100.f);
     shape.setFillColor(sf::Color::Green);
 
-    town::FontManager fontManager;
+    town::Engine engine;
+
+    auto &fontManager = engine.fontManager();
     fontManager.load_font("sans", "data/NotoSans-Regular.ttf");
 
-    auto sans_font = fontManager.font("sans");
+    auto sansFont = fontManager.font("sans");
+
+    auto &mapManager = engine.mapManager();
+    auto &map1 = mapManager.create_map("Map 1");
 
     // Create a text
-    sf::Text text("hello", *sans_font);
+    sf::Text text("hello", *sansFont);
     text.setCharacterSize(72);
 
     sf::Clock timer;
@@ -42,6 +48,8 @@ int main()
         auto deltaTime = timer.getElapsedTime().asSeconds();
         timer.restart();
 
+        map1.update(deltaTime);
+
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::A))
         {
             shape.move(-100.0f * deltaTime, 0.0f);
@@ -55,6 +63,7 @@ int main()
         window.clear();
         window.draw(shape);
         window.draw(text);
+        map1.draw(window);
         window.display();
     }
 
