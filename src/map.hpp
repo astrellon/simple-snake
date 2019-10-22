@@ -2,7 +2,6 @@
 
 #include <map>
 #include <string>
-#include <unordered_map>
 
 #include <SFML/Graphics.hpp>
 #include <SFML/System.hpp>
@@ -12,6 +11,8 @@
 
 namespace town
 {
+    class Engine;
+
     class Map : private NonCopyable
     {
         public:
@@ -20,13 +21,13 @@ namespace town
 
             const std::string &map_name() const;
 
-            typedef std::unordered_map<sf::Vector2i, int> MapData;
+            typedef std::map<sf::Vector2i, int, Vector2iComparator> MapData;
 
             MapData &map_data();
             const MapData &map_data() const;
 
             void update(float dt);
-            void draw(sf::RenderTarget &target);
+            void draw(Engine *engine, sf::RenderTarget &target);
 
         private:
             const std::string _map_name;

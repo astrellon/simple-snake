@@ -11,4 +11,9 @@ namespace town
     {
         return _mapManager;
     }
+
+    Tiles &Engine::tiles() const
+    {
+        return _tiles;
+    }
 }

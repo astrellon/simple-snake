@@ -2,7 +2,9 @@
 #include <SFML/System.hpp>
 
 #include "src/engine.hpp"
+#include "src/font_manager.hpp"
 #include "src/map.hpp"
+#include "src/tiles.hpp"
 
 int main()
 {
@@ -17,13 +19,19 @@ int main()
 
     auto sansFont = fontManager.font("sans");
 
+    auto tileTexture = std::make_unique<sf::Texture>();
+    tileTexture->loadFromFile("data/tiles.png");
+
+    auto &tiles = engine.tiles();
+    tiles.init(tileTexture.get(), 16);
+
     auto &mapManager = engine.mapManager();
     auto &map1 = mapManager.create_map("Map 1");
     auto &map_data = map1.map_data();
-    map_data[sf::Vector2i(1, 3)] = 1;
+    map_data[sf::Vector2i(1, 3)] = 0;
     map_data[sf::Vector2i(3, 1)] = 1;
-    map_data[sf::Vector2i(1, 2)] = 1;
-    map_data[sf::Vector2i(2, 1)] = 1;
+    map_data[sf::Vector2i(1, 2)] = 2;
+    map_data[sf::Vector2i(2, 1)] = 3;
 
     // Create a text
     sf::Text text("hello", *sansFont);
@@ -66,9 +74,8 @@ int main()
         }
 
         window.clear();
-        //window.draw(shape);
         window.draw(text);
-        map1.draw(window);
+        map1.draw(&engine, window);
         window.display();
     }
 

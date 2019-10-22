@@ -2,6 +2,8 @@
 
 #include <SFML/Graphics.hpp>
 
+#include "engine.hpp"
+
 namespace town
 {
     Map::Map(const std::string &map_name) : _map_name(map_name)
@@ -34,16 +36,20 @@ namespace town
 
     }
 
-    void Map::draw(sf::RenderTarget &target)
+    void Map::draw(Engine *engine, sf::RenderTarget &target)
     {
-        sf::RectangleShape tile;
-        tile.setSize(sf::Vector2f(50, 50));
-        tile.setFillColor(sf::Color::Red);
+        const float size = 64;
 
         for (const auto &iter : _data)
         {
-            tile.setPosition(50.0f * iter.first.x, 50.0f * iter.first.y);
-            target.draw(tile);
+            auto *sprite = engine->tiles().get_sprite(iter.second);
+            if (sprite == nullptr)
+            {
+                continue;
+            }
+            sprite->setScale(sf::Vector2f(4.f, 4.f));
+            sprite->setPosition(size * iter.first.x, size * iter.first.y);
+            target.draw(*sprite);
         }
     }
 }
