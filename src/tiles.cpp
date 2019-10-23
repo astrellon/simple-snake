@@ -20,7 +20,7 @@ namespace town
 
     sf::Sprite *Tiles::get_sprite(uint index)
     {
-        if (_sprites.size() >= index)
+        if (_sprites.size() <= index)
         {
             return nullptr;
         }
