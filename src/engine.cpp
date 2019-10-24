@@ -46,7 +46,7 @@ namespace town
             }
             else if (tokens[0] == "texture")
             {
-                _textureManager.load_texture(tokens[1], "data/" + tokens[2]);
+                _textureManager.loadTexture(tokens[1], "data/" + tokens[2]);
             }
             else
             {

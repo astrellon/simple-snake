@@ -18,7 +18,7 @@ namespace town
         }
     }
 
-    sf::Sprite *Tiles::get_sprite(uint index)
+    sf::Sprite *Tiles::getSprite(uint index)
     {
         if (_sprites.size() <= index)
         {

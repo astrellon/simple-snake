@@ -13,7 +13,7 @@ namespace town
         public:
             void init(const sf::Texture *texture, uint spriteSize);
 
-            sf::Sprite *get_sprite(uint index);
+            sf::Sprite *getSprite(uint index);
 
             typedef std::vector<std::unique_ptr<sf::Sprite>> SpriteList;
 

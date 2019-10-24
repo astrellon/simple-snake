@@ -16,23 +16,25 @@ namespace town
     class Map : private NonCopyable
     {
         public:
-            Map(const std::string &map_name, uint width, uint height);
+            Map(const std::string &mapName, uint width, uint height);
             ~Map();
 
-            const std::string &map_name() const;
+            const std::string &mapName() const;
 
             typedef std::vector<int> MapData;
 
-            MapData &map_data();
-            const MapData &map_data() const;
+            MapData &mapData();
+            const MapData &mapData() const;
             uint width() const;
             uint height() const;
+
+            void setTile(uint x, uint y, int tile);
 
             void update(float dt);
             void draw(Engine *engine, sf::RenderTarget &target);
 
         private:
-            const std::string _map_name;
+            const std::string _mapName;
             uint _width;
             uint _height;
             MapData _data;

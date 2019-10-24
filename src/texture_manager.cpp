@@ -5,7 +5,7 @@
 namespace town
 {
 
-    bool TextureManager::load_texture(const std::string &name, const std::string &filename)
+    bool TextureManager::loadTexture(const std::string &name, const std::string &filename)
     {
         if (name.empty())
         {

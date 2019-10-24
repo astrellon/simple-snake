@@ -6,8 +6,8 @@
 
 namespace town
 {
-    Map::Map(const std::string &map_name, uint width, uint height) :
-        _map_name(map_name), _width(width), _height(height)
+    Map::Map(const std::string &mapName, uint width, uint height) :
+        _mapName(mapName), _width(width), _height(height)
     {
         _data.resize(width * height);
         for (auto i = 0; i < width * height; i++)
@@ -21,17 +21,17 @@ namespace town
 
     }
 
-    const std::string &Map::map_name() const
+    const std::string &Map::mapName() const
     {
-        return _map_name;
+        return _mapName;
     }
 
-    Map::MapData &Map::map_data()
+    Map::MapData &Map::mapData()
     {
         return _data;
     }
 
-    const Map::MapData &Map::map_data() const
+    const Map::MapData &Map::mapData() const
     {
         return _data;
     }
@@ -46,6 +46,15 @@ namespace town
         return _height;
     }
 
+    void Map::setTile(uint x, uint y, int tile)
+    {
+        auto index = y * _width + x;
+        if (index < _data.size())
+        {
+            _data[index] = tile;
+        }
+    }
+
     void Map::update(float dt)
     {
 
@@ -58,7 +67,7 @@ namespace town
         auto x = 0, y = 0;
         for (const auto tile : _data)
         {
-            auto *sprite = engine->tiles().get_sprite(tile);
+            auto *sprite = engine->tiles().getSprite(tile);
             if (sprite == nullptr)
             {
                 continue;

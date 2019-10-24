@@ -11,7 +11,7 @@ namespace town
     class MapManager : private NonCopyable
     {
         public:
-            Map &create_map(const std::string &map_name, uint width, uint height);
+            Map &createMap(const std::string &mapName, uint width, uint height);
 
             typedef std::map<std::string, std::unique_ptr<Map>> MapMap;
 

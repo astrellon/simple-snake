@@ -22,11 +22,12 @@ int main()
     tiles.init(tileTexture, 16);
 
     auto &mapManager = engine.mapManager();
-    auto &map1 = mapManager.create_map("Map 1", 5, 5);
-    auto &map_data = map1.map_data();
-    map_data[2] = 1;
-    map_data[5] = 2;
-    map_data[7] = 3;
+    auto &map1 = mapManager.createMap("Map 1", 5, 5);
+    map1.setTile(1, 1, 1);
+    map1.setTile(2, 1, 2);
+    map1.setTile(3, 1, 3);
+    map1.setTile(2, 2, 3);
+    map1.setTile(2, 4, 5);
 
     // Create a text
     sf::Text text("hello", *sansFont);
