@@ -13,17 +13,13 @@ int main()
     shape.setFillColor(sf::Color::Green);
 
     town::Engine engine;
+    engine.readDataPaths("data/data.csv");
 
-    auto &fontManager = engine.fontManager();
-    fontManager.load_font("sans", "data/NotoSans-Regular.ttf");
-
-    auto sansFont = fontManager.font("sans");
-
-    auto tileTexture = std::make_unique<sf::Texture>();
-    tileTexture->loadFromFile("data/tiles.png");
+    auto sansFont = engine.fontManager().font("sans");
+    auto tileTexture = engine.textureManager().texture("tiles");
 
     auto &tiles = engine.tiles();
-    tiles.init(tileTexture.get(), 16);
+    tiles.init(tileTexture, 16);
 
     auto &mapManager = engine.mapManager();
     auto &map1 = mapManager.create_map("Map 1", 5, 5);
@@ -73,8 +69,8 @@ int main()
         }
 
         window.clear();
-        window.draw(text);
         map1.draw(&engine, window);
+        window.draw(text);
         window.display();
     }
 

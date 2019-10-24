@@ -2,7 +2,7 @@
 
 namespace town
 {
-    void Tiles::init(sf::Texture *texture, uint spriteSize)
+    void Tiles::init(const sf::Texture *texture, uint spriteSize)
     {
         auto size = texture->getSize();
         auto rows = size.y / spriteSize;

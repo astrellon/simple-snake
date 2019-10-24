@@ -57,17 +57,17 @@ namespace town
 
         auto x = 0, y = 0;
         for (const auto tile : _data)
-        //for (auto index = 0; index < _data.size(); index++)
         {
-            //auto tile = _data[index];
             auto *sprite = engine->tiles().get_sprite(tile);
             if (sprite == nullptr)
             {
                 continue;
             }
+
             sprite->setScale(sf::Vector2f(4.f, 4.f));
             sprite->setPosition(size * x, size * y);
             target.draw(*sprite);
+
             x++;
             if (x >= _width)
             {

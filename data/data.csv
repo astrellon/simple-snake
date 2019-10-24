@@ -1,0 +1,4 @@
+# Data CSV File
+# type, name, filepath
+font, sans, NotoSans-Regular.ttf
+texture, tiles, tiles.png
