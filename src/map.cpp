@@ -46,13 +46,23 @@ namespace town
         return _height;
     }
 
-    void Map::setTile(uint x, uint y, int tile)
+    void Map::tile(uint x, uint y, int tile)
     {
         auto index = y * _width + x;
         if (index < _data.size())
         {
             _data[index] = tile;
         }
+    }
+    int Map::tile(uint x, uint y)
+    {
+        auto index = y * _width + x;
+        if (index < _data.size())
+        {
+            return _data[index];
+        }
+
+        return -1;
     }
 
     void Map::update(float dt)

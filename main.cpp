@@ -5,6 +5,7 @@
 #include "src/font_manager.hpp"
 #include "src/map.hpp"
 #include "src/tiles.hpp"
+#include "src/snake.hpp"
 
 int main()
 {
@@ -15,6 +16,8 @@ int main()
     town::Engine engine;
     engine.readDataPaths("data/data.csv");
 
+    town::Snake player;
+
     auto sansFont = engine.fontManager().font("sans");
     auto tileTexture = engine.textureManager().texture("tiles");
 
@@ -23,11 +26,10 @@ int main()
 
     auto &mapManager = engine.mapManager();
     auto &map1 = mapManager.createMap("Map 1", 5, 5);
-    map1.setTile(1, 1, 1);
-    map1.setTile(2, 1, 2);
-    map1.setTile(3, 1, 3);
-    map1.setTile(2, 2, 3);
-    map1.setTile(2, 4, 5);
+    map1.tile(1, 1, 1);
+    map1.tile(2, 1, 2);
+    map1.tile(3, 1, 3);
+    map1.tile(4, 1, 4);
 
     // Create a text
     sf::Text text("hello", *sansFont);
@@ -58,19 +60,11 @@ int main()
         timer.restart();
 
         map1.update(deltaTime);
-
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::A))
-        {
-            shape.move(-100.0f * deltaTime, 0.0f);
-        }
-
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::D))
-        {
-            shape.move(100.0f * deltaTime, 0.0f);
-        }
+        player.update(&map1, deltaTime);
 
         window.clear();
         map1.draw(&engine, window);
+        player.draw(&engine, window);
         window.draw(text);
         window.display();
     }

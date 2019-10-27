@@ -28,7 +28,8 @@ namespace town
             uint width() const;
             uint height() const;
 
-            void setTile(uint x, uint y, int tile);
+            void tile(uint x, uint y, int tile);
+            int tile(uint x, uint y);
 
             void update(float dt);
             void draw(Engine *engine, sf::RenderTarget &target);

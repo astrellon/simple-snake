@@ -2,3 +2,4 @@
 # type, name, filepath
 font, sans, NotoSans-Regular.ttf
 texture, tiles, tiles.png
+texture, snake, snake.png
