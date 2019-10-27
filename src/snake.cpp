@@ -2,6 +2,7 @@
 
 #include "engine.hpp"
 #include "map.hpp"
+#include "keyboard.hpp"
 
 namespace town
 {
@@ -18,22 +19,22 @@ namespace town
     void Snake::update(Map *map, float dt)
     {
         sf::Vector2i newPosition = _position;
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::A))
+        if (Keyboard::isKeyDown(sf::Keyboard::A))
         {
             newPosition.x -= 1;
         }
 
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::D))
+        if (Keyboard::isKeyDown(sf::Keyboard::D))
         {
             newPosition.x += 1;
         }
 
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::W))
+        if (Keyboard::isKeyDown(sf::Keyboard::W))
         {
             newPosition.y -= 1;
         }
 
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::S))
+        if (Keyboard::isKeyDown(sf::Keyboard::S))
         {
             newPosition.y += 1;
         }

@@ -6,6 +6,7 @@
 #include "src/map.hpp"
 #include "src/tiles.hpp"
 #include "src/snake.hpp"
+#include "src/keyboard.hpp"
 
 int main()
 {
@@ -40,19 +41,28 @@ int main()
     while (window.isOpen())
     {
         sf::Event event;
+        town::Keyboard::resetKeys();
+
         while (window.pollEvent(event))
         {
             if (event.type == sf::Event::Closed)
             {
                 window.close();
             }
-
             // catch the resize events
-            if (event.type == sf::Event::Resized)
+            else if (event.type == sf::Event::Resized)
             {
                 // update the view to the new size of the window
                 sf::FloatRect visibleArea(0.f, 0.f, event.size.width, event.size.height);
                 window.setView(sf::View(visibleArea));
+            }
+            else if (event.type == sf::Event::KeyPressed)
+            {
+                town::Keyboard::setKeyDown(event.key.code);
+            }
+            else if (event.type == sf::Event::KeyReleased)
+            {
+                town::Keyboard::setKeyUp(event.key.code);
             }
         }
 
