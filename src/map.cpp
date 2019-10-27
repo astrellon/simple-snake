@@ -46,23 +46,36 @@ namespace town
         return _height;
     }
 
-    void Map::tile(uint x, uint y, int tile)
+    void Map::tile(int x, int y, int tile)
     {
         auto index = y * _width + x;
-        if (index < _data.size())
+        if (index >= 0 && index < _data.size())
         {
             _data[index] = tile;
         }
     }
-    int Map::tile(uint x, uint y)
+
+    int Map::tile(int x, int y) const
     {
         auto index = y * _width + x;
-        if (index < _data.size())
+        if (index >= 0 && index < _data.size())
         {
             return _data[index];
         }
 
         return -1;
+    }
+
+    bool Map::canMoveTo(sf::Vector2i position) const
+    {
+        if (position.x < 0 || position.x >= _width ||
+            position.y < 0 || position.y >= _height)
+        {
+            return false;
+        }
+
+        auto tileData = tile(position.x, position.y);
+        return tileData < 8;
     }
 
     void Map::update(float dt)

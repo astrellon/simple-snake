@@ -39,8 +39,7 @@ namespace town
             newPosition.y += 1;
         }
 
-        auto onTile = map->tile(newPosition.x, newPosition.y);
-        if (onTile < 8 && onTile >= 0)
+        if (map->canMoveTo(newPosition))
         {
             _position = newPosition;
         }

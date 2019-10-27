@@ -31,6 +31,9 @@ int main()
     map1.tile(2, 1, 2);
     map1.tile(3, 1, 3);
     map1.tile(4, 1, 4);
+    map1.tile(0, 2, 8);
+    map1.tile(1, 2, 8);
+    map1.tile(2, 2, 8);
 
     // Create a text
     sf::Text text("hello", *sansFont);
