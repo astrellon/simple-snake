@@ -5,10 +5,11 @@
 
 #include "utils.hpp"
 #include "map.hpp"
+#include "game_session.hpp"
 
 namespace town
 {
-    Engine::Engine() : _spriteScale(1.0f), _currentMap(nullptr)
+    Engine::Engine() : _spriteScale(1.0f)
     {
 
     }
@@ -46,13 +47,14 @@ namespace town
         _spriteScale = scale;
     }
 
-    Map *Engine::currentMap() const
+    GameSession *Engine::currentSession() const
     {
-        return _currentMap;
+        return _currentSession.get();
     }
-    void Engine::currentMap(Map *map)
+    GameSession *Engine::startGameSession()
     {
-        _currentMap = map;
+        _currentSession = std::make_unique<GameSession>(this);
+        return _currentSession.get();
     }
 
     void Engine::readDataPaths(const std::string &filename)
@@ -79,19 +81,17 @@ namespace town
 
     void Engine::update(float dt)
     {
-        if (_currentMap != nullptr)
+        if (_currentSession.get())
         {
-            _currentMap->update(dt);
-            _player.update(_currentMap, dt);
+            _currentSession->update(dt);
         }
     }
 
     void Engine::draw(sf::RenderTarget &target)
     {
-        if (_currentMap != nullptr)
+        if (_currentSession.get())
         {
-            _currentMap->draw(this, target);
-            _player.draw(this, target);
+            _currentSession->draw(target);
         }
     }
 }

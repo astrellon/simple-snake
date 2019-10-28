@@ -12,6 +12,7 @@
 namespace town
 {
     class Map;
+    class GameSession;
 
     class Engine : private NonCopyable
     {
@@ -27,8 +28,8 @@ namespace town
             float spriteScale() const;
             void spriteScale(float scale);
 
-            Map *currentMap() const;
-            void currentMap(Map *map);
+            GameSession *currentSession() const;
+            GameSession *startGameSession();
 
             void readDataPaths(const std::string &filename);
 
@@ -41,9 +42,7 @@ namespace town
             mutable MapManager _mapManager;
             mutable Tiles _tiles;
 
-            Map *_currentMap;
-            Snake _player;
-
             float _spriteScale;
+            std::unique_ptr<GameSession> _currentSession;
     };
 } // town

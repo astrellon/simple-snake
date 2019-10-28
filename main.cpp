@@ -2,6 +2,8 @@
 #include <SFML/System.hpp>
 
 #include <iostream>
+#include <thread>
+#include <chrono>
 
 #include "src/engine.hpp"
 #include "src/font_manager.hpp"
@@ -9,6 +11,7 @@
 #include "src/tiles.hpp"
 #include "src/snake.hpp"
 #include "src/keyboard.hpp"
+#include "src/game_session.hpp"
 
 int main()
 {
@@ -31,7 +34,9 @@ int main()
         std::cout << "Cannot play without a map!" << std::endl;
         return 1;
     }
-    engine.currentMap(map1);
+
+    auto gameSession = engine.startGameSession();
+    gameSession->currentMap(map1);
 
     // Create a text
     sf::Text text("hello", *sansFont);
@@ -76,6 +81,8 @@ int main()
         engine.draw(window);
         window.draw(text);
         window.display();
+
+        //std::this_thread::sleep_for(std::chrono::milliseconds(16));
     }
 
     return 0;
