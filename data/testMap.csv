@@ -1,2 +1,7 @@
 # Test map 1
-info, Test Map, 10, 10
+info, Test Map, 16, 12
+row
+row
+row, 0, 8, 9, 9, 10
+row, 0, 16, 1, 2, 18,
+row, 0, 24, 25, 25, 26
