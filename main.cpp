@@ -20,8 +20,6 @@ int main()
     engine.spriteScale(4.0f);
     engine.readDataPaths("data/data.csv");
 
-    town::Snake player;
-
     auto sansFont = engine.fontManager().font("sans");
     auto tileTexture = engine.textureManager().texture("tiles");
 
@@ -35,6 +33,7 @@ int main()
         std::cout << "Cannot play without a map!" << std::endl;
         return 1;
     }
+    engine.currentMap(map1);
 
     // Create a text
     sf::Text text("hello", *sansFont);
@@ -73,12 +72,10 @@ int main()
         auto deltaTime = timer.getElapsedTime().asSeconds();
         timer.restart();
 
-        map1->update(deltaTime);
-        player.update(map1, deltaTime);
+        engine.update(deltaTime);
 
         window.clear();
-        map1->draw(&engine, window);
-        player.draw(&engine, window);
+        engine.draw(window);
         window.draw(text);
         window.display();
     }

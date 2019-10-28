@@ -4,10 +4,11 @@
 #include <fstream>
 
 #include "utils.hpp"
+#include "map.hpp"
 
 namespace town
 {
-    Engine::Engine() : _spriteScale(1.0f)
+    Engine::Engine() : _spriteScale(1.0f), _currentMap(nullptr)
     {
 
     }
@@ -45,6 +46,15 @@ namespace town
         _spriteScale = scale;
     }
 
+    Map *Engine::currentMap() const
+    {
+        return _currentMap;
+    }
+    void Engine::currentMap(Map *map)
+    {
+        _currentMap = map;
+    }
+
     void Engine::readDataPaths(const std::string &filename)
     {
         Utils::readCSVLines(filename, [=](const std::string &line)
@@ -65,5 +75,23 @@ namespace town
 
             return true;
         });
+    }
+
+    void Engine::update(float dt)
+    {
+        if (_currentMap != nullptr)
+        {
+            _currentMap->update(dt);
+            _player.update(_currentMap, dt);
+        }
+    }
+
+    void Engine::draw(sf::RenderTarget &target)
+    {
+        if (_currentMap != nullptr)
+        {
+            _currentMap->draw(this, target);
+            _player.draw(this, target);
+        }
     }
 }
