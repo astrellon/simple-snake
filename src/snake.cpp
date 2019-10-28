@@ -1,14 +1,17 @@
 #include "snake.hpp"
 
+#include <algorithm>
+#include <iostream>
+
 #include "engine.hpp"
 #include "map.hpp"
 #include "keyboard.hpp"
 
 namespace town
 {
-    Snake::Snake()
+    Snake::Snake() : _length(3)
     {
-
+        _positions.push_back(sf::Vector2i(0, 0));
     }
 
     Snake::~Snake()
@@ -18,30 +21,38 @@ namespace town
 
     void Snake::update(Map *map, float dt)
     {
-        sf::Vector2i newPosition = _position;
+        sf::Vector2i move;
         if (Keyboard::isKeyDown(sf::Keyboard::A))
         {
-            newPosition.x -= 1;
+            move.x -= 1;
         }
 
         if (Keyboard::isKeyDown(sf::Keyboard::D))
         {
-            newPosition.x += 1;
+            move.x += 1;
         }
 
         if (Keyboard::isKeyDown(sf::Keyboard::W))
         {
-            newPosition.y -= 1;
+            move.y -= 1;
         }
 
         if (Keyboard::isKeyDown(sf::Keyboard::S))
         {
-            newPosition.y += 1;
+            move.y += 1;
         }
 
-        if (map->canMoveTo(newPosition))
+        if (move.x != 0 || move.y != 0)
         {
-            _position = newPosition;
+            auto newPosition = *_positions.rbegin() + move;
+            if (map->canMoveTo(newPosition))
+            {
+                _positions.push_back(newPosition);
+                if (_positions.size() > _length)
+                {
+                    _positions.erase(_positions.begin());
+                }
+            }
         }
     }
 
@@ -59,7 +70,10 @@ namespace town
         sf::Sprite sprite(*texture);
 
         sprite.setScale(sf::Vector2f(scale, scale));
-        sprite.setPosition(size * _position.x, size * _position.y);
-        target.draw(sprite);
+        for (const auto &iter : _positions)
+        {
+            sprite.setPosition(size * iter.x, size * iter.y);
+            target.draw(sprite);
+        }
     }
 }

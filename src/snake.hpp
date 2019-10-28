@@ -1,5 +1,7 @@
 #pragma once
 
+#include <vector>
+
 #include <SFML/System.hpp>
 #include <SFML/Graphics.hpp>
 
@@ -17,8 +19,11 @@ namespace town
             void update(Map *map, float dt);
             void draw(Engine *engine, sf::RenderTarget &target);
 
+            typedef std::vector<sf::Vector2i> PositionList;
+
         private:
-            sf::Vector2i _position;
+            PositionList _positions;
+            int _length;
             bool _keyPressed;
     };
 } // town
