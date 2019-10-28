@@ -47,6 +47,11 @@ namespace town
             auto newPosition = *_positions.rbegin() + move;
             if (map->canMoveTo(newPosition))
             {
+                if (map->hitApple(newPosition))
+                {
+                    _length++;
+                }
+
                 _positions.push_back(newPosition);
                 if (_positions.size() > _length)
                 {

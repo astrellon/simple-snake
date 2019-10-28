@@ -14,6 +14,9 @@ namespace town
         {
             _data[i] = 0;
         }
+
+        _apples.push_back(Apple(sf::Vector2i(3, 0)));
+        _apples.push_back(Apple(sf::Vector2i(6, 1)));
     }
 
     Map::~Map()
@@ -78,6 +81,20 @@ namespace town
         return tileData < 8;
     }
 
+    bool Map::hitApple(sf::Vector2i position)
+    {
+        for (auto iter = _apples.begin(); iter != _apples.end(); ++iter)
+        {
+            if (iter->position() == position)
+            {
+                _apples.erase(iter);
+                return true;
+            }
+        }
+
+        return false;
+    }
+
     void Map::update(float dt)
     {
 
@@ -85,7 +102,8 @@ namespace town
 
     void Map::draw(Engine *engine, sf::RenderTarget &target)
     {
-        float size = 16.0f * engine->spriteScale();
+        auto scale = engine->spriteScale();
+        auto size = 16.0f * scale;
 
         auto x = 0, y = 0;
         for (const auto tile : _data)
@@ -104,6 +122,18 @@ namespace town
             {
                 y++;
                 x = 0;
+            }
+        }
+
+        if (_apples.size() > 0)
+        {
+            sf::Sprite appleSprite(*engine->textureManager().texture("apple"));
+            appleSprite.setScale(scale, scale);
+            for (const auto &apple : _apples)
+            {
+                auto pos = apple.position();
+                appleSprite.setPosition(size * pos.x, size * pos.y);
+                target.draw(appleSprite);
             }
         }
     }

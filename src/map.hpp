@@ -8,6 +8,7 @@
 
 #include "non_copyable.hpp"
 #include "vector_comparer.hpp"
+#include "apple.hpp"
 
 namespace town
 {
@@ -22,6 +23,7 @@ namespace town
             const std::string &mapName() const;
 
             typedef std::vector<int> MapData;
+            typedef std::vector<Apple> AppleList;
 
             MapData &mapData();
             const MapData &mapData() const;
@@ -32,6 +34,7 @@ namespace town
             int tile(int x, int y) const;
 
             bool canMoveTo(sf::Vector2i position) const;
+            bool hitApple(sf::Vector2i position);
 
             void update(float dt);
             void draw(Engine *engine, sf::RenderTarget &target);
@@ -41,5 +44,6 @@ namespace town
             uint _width;
             uint _height;
             MapData _data;
+            AppleList _apples;
     };
 } // town
