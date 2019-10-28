@@ -16,6 +16,7 @@
 int main()
 {
     sf::RenderWindow window(sf::VideoMode(1280, 800), "SFML works!");
+    window.setVerticalSyncEnabled(true);
 
     town::Engine engine;
     engine.spriteScale(4.0f);
@@ -40,7 +41,7 @@ int main()
 
     // Create a text
     sf::Text text("hello", *sansFont);
-    text.setCharacterSize(72);
+    text.setCharacterSize(60);
 
     sf::Clock timer;
 
@@ -81,8 +82,6 @@ int main()
         engine.draw(window);
         window.draw(text);
         window.display();
-
-        //std::this_thread::sleep_for(std::chrono::milliseconds(16));
     }
 
     return 0;
