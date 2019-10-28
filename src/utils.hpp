@@ -15,7 +15,8 @@ namespace town
             static std::string &ltrim(std::string & str);
             static std::string &trim(std::string & str);
 
-            static void readCSVLines(const std::string &filename, std::function<void (const std::string &)> lineReader);
+            typedef std::function<bool (const std::string &)> LineReader;
+            static void readCSVLines(const std::string &filename, LineReader lineReader);
 
         private:
             Utils();

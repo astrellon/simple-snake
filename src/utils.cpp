@@ -44,7 +44,7 @@ namespace town
         return ltrim(rtrim(str));
     }
 
-    void Utils::readCSVLines(const std::string &filename, std::function<void (const std::string &)> lineReader)
+    void Utils::readCSVLines(const std::string &filename, Utils::LineReader lineReader)
     {
         std::ifstream data(filename);
 
@@ -56,7 +56,10 @@ namespace town
                 continue;
             }
 
-            lineReader(line);
+            if (!lineReader(line))
+            {
+                break;
+            }
         }
     }
 }

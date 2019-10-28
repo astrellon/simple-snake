@@ -12,6 +12,7 @@ namespace town
     {
         public:
             Map &createMap(const std::string &mapName, uint width, uint height);
+            Map *loadMap(const std::string &filename);
 
             typedef std::map<std::string, std::unique_ptr<Map>> MapMap;
 

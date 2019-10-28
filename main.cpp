@@ -1,6 +1,8 @@
 #include <SFML/Graphics.hpp>
 #include <SFML/System.hpp>
 
+#include <iostream>
+
 #include "src/engine.hpp"
 #include "src/font_manager.hpp"
 #include "src/map.hpp"
@@ -27,14 +29,12 @@ int main()
     tiles.init(tileTexture, 16, engine.spriteScale());
 
     auto &mapManager = engine.mapManager();
-    auto &map1 = mapManager.createMap("Map 1", 5, 5);
-    map1.tile(1, 1, 1);
-    map1.tile(2, 1, 2);
-    map1.tile(3, 1, 3);
-    map1.tile(4, 1, 4);
-    map1.tile(0, 2, 8);
-    map1.tile(1, 2, 8);
-    map1.tile(2, 2, 8);
+    auto map1 = mapManager.loadMap("data/testMap.csv");
+    if (map1 == nullptr)
+    {
+        std::cout << "Cannot play without a map!" << std::endl;
+        return 1;
+    }
 
     // Create a text
     sf::Text text("hello", *sansFont);
@@ -73,11 +73,11 @@ int main()
         auto deltaTime = timer.getElapsedTime().asSeconds();
         timer.restart();
 
-        map1.update(deltaTime);
-        player.update(&map1, deltaTime);
+        map1->update(deltaTime);
+        player.update(map1, deltaTime);
 
         window.clear();
-        map1.draw(&engine, window);
+        map1->draw(&engine, window);
         player.draw(&engine, window);
         window.draw(text);
         window.display();

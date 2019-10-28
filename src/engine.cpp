@@ -62,6 +62,8 @@ namespace town
             {
                 std::cout << "Unknown data path line: " << line << std::endl;
             }
+
+            return true;
         });
     }
 }

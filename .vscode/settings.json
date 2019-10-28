@@ -3,6 +3,7 @@
     "cmake.configureOnOpen": false,
     "files.associations": {
         "sstream": "cpp",
-        "fstream": "cpp"
+        "fstream": "cpp",
+        "functional": "cpp"
     }
 }
