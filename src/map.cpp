@@ -85,7 +85,7 @@ namespace town
 
     void Map::draw(Engine *engine, sf::RenderTarget &target)
     {
-        const float size = 64;
+        float size = 16.0f * engine->spriteScale();
 
         auto x = 0, y = 0;
         for (const auto tile : _data)
@@ -96,7 +96,6 @@ namespace town
                 continue;
             }
 
-            sprite->setScale(sf::Vector2f(4.f, 4.f));
             sprite->setPosition(size * x, size * y);
             target.draw(*sprite);
 

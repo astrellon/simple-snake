@@ -11,10 +11,16 @@ namespace town
     class Engine : private NonCopyable
     {
         public:
+            Engine();
+            ~Engine();
+
             FontManager &fontManager() const;
             TextureManager &textureManager() const;
             MapManager &mapManager() const;
             Tiles &tiles() const;
+
+            float spriteScale() const;
+            void spriteScale(float scale);
 
             void readDataPaths(const std::string &filename);
 
@@ -23,5 +29,7 @@ namespace town
             mutable TextureManager _textureManager;
             mutable MapManager _mapManager;
             mutable Tiles _tiles;
+
+            float _spriteScale;
     };
 } // town

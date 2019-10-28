@@ -15,6 +15,7 @@ int main()
     shape.setFillColor(sf::Color::Green);
 
     town::Engine engine;
+    engine.spriteScale(4.0f);
     engine.readDataPaths("data/data.csv");
 
     town::Snake player;
@@ -23,7 +24,7 @@ int main()
     auto tileTexture = engine.textureManager().texture("tiles");
 
     auto &tiles = engine.tiles();
-    tiles.init(tileTexture, 16);
+    tiles.init(tileTexture, 16, engine.spriteScale());
 
     auto &mapManager = engine.mapManager();
     auto &map1 = mapManager.createMap("Map 1", 5, 5);

@@ -7,6 +7,15 @@
 
 namespace town
 {
+    Engine::Engine() : _spriteScale(1.0f)
+    {
+
+    }
+    Engine::~Engine()
+    {
+
+    }
+
     FontManager &Engine::fontManager() const
     {
         return _fontManager;
@@ -25,6 +34,15 @@ namespace town
     Tiles &Engine::tiles() const
     {
         return _tiles;
+    }
+
+    float Engine::spriteScale() const
+    {
+        return _spriteScale;
+    }
+    void Engine::spriteScale(float scale)
+    {
+        _spriteScale = scale;
     }
 
     void Engine::readDataPaths(const std::string &filename)

@@ -11,7 +11,7 @@ namespace town
     class Tiles : private NonCopyable
     {
         public:
-            void init(const sf::Texture *texture, uint spriteSize);
+            void init(const sf::Texture *texture, uint spriteSize, float spriteScale);
 
             sf::Sprite *getSprite(uint index);
 

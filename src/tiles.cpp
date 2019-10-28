@@ -1,8 +1,10 @@
 #include "tiles.hpp"
 
+#include "engine.hpp"
+
 namespace town
 {
-    void Tiles::init(const sf::Texture *texture, uint spriteSize)
+    void Tiles::init(const sf::Texture *texture, uint spriteSize, float spriteScale)
     {
         auto size = texture->getSize();
         auto rows = size.y / spriteSize;
@@ -13,7 +15,11 @@ namespace town
             for (auto x = 0; x < rows; x++)
             {
                 auto rect = sf::IntRect(x * spriteSize, y * spriteSize, spriteSize, spriteSize);
-                _sprites.push_back(std::make_unique<sf::Sprite>(*texture, rect));
+
+                auto sprite = std::make_unique<sf::Sprite>(*texture, rect);
+                sprite->setScale(spriteScale, spriteScale);
+
+                _sprites.push_back(std::move(sprite));
             }
         }
     }

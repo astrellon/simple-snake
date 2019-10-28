@@ -4,7 +4,6 @@
 
 namespace town
 {
-
     bool TextureManager::loadTexture(const std::string &name, const std::string &filename)
     {
         if (name.empty())
@@ -18,6 +17,7 @@ namespace town
             return false;
         }
 
+        texture->setSmooth(false);
         _textures.emplace(name, std::move(texture));
         return true;
     }
