@@ -2,6 +2,8 @@
 
 #include <sstream>
 #include <algorithm>
+#include <iostream>
+#include <fstream>
 
 namespace town
 {
@@ -40,5 +42,21 @@ namespace town
     std::string &Utils::trim(std::string & str)
     {
         return ltrim(rtrim(str));
+    }
+
+    void Utils::readCSVLines(const std::string &filename, std::function<void (const std::string &)> lineReader)
+    {
+        std::ifstream data(filename);
+
+        std::string line;
+        while (std::getline(data, line))
+        {
+            if (line.size() == 0 || line[0] == '#')
+            {
+                continue;
+            }
+
+            lineReader(line);
+        }
     }
 }

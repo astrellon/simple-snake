@@ -1,5 +1,6 @@
 #pragma once
 
+#include <functional>
 #include <string>
 #include <vector>
 
@@ -13,6 +14,8 @@ namespace town
             static std::string &rtrim(std::string & str);
             static std::string &ltrim(std::string & str);
             static std::string &trim(std::string & str);
+
+            static void readCSVLines(const std::string &filename, std::function<void (const std::string &)> lineReader);
 
         private:
             Utils();

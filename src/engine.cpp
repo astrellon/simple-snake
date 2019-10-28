@@ -29,16 +29,8 @@ namespace town
 
     void Engine::readDataPaths(const std::string &filename)
     {
-        std::ifstream data(filename);
-
-        std::string line;
-        while (std::getline(data, line))
+        Utils::readCSVLines(filename, [=](const std::string &line)
         {
-            if (line.size() == 0 || line[0] == '#')
-            {
-                continue;
-            }
-
             auto tokens = Utils::split(line, ',', true);
             if (tokens[0] == "font")
             {
@@ -52,6 +44,6 @@ namespace town
             {
                 std::cout << "Unknown data path line: " << line << std::endl;
             }
-        }
+        });
     }
 }
