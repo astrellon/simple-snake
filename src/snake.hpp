@@ -21,6 +21,8 @@ namespace town
 
             typedef std::vector<sf::Vector2i> PositionList;
 
+            sf::Vector2i head_position() const;
+
         private:
             PositionList _positions;
             int _length;

@@ -19,6 +19,11 @@ namespace town
 
     }
 
+    sf::Vector2i Snake::head_position() const
+    {
+        return *_positions.rbegin();
+    }
+
     void Snake::update(Map *map, float dt)
     {
         sf::Vector2i move;

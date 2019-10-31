@@ -6,10 +6,12 @@
 #include "utils.hpp"
 #include "map.hpp"
 #include "game_session.hpp"
+#include "keyboard.hpp"
 
 namespace town
 {
-    Engine::Engine() : _spriteScale(1.0f)
+    Engine::Engine(sf::RenderWindow &window) :
+        _spriteScale(1.0f), _window(window), _deltaTime(0.0f)
     {
 
     }
@@ -47,6 +49,11 @@ namespace town
         _spriteScale = scale;
     }
 
+    sf::Vector2u Engine::windowSize() const
+    {
+        return _window.getSize();
+    }
+
     GameSession *Engine::currentSession() const
     {
         return _currentSession.get();
@@ -79,19 +86,72 @@ namespace town
         });
     }
 
-    void Engine::update(float dt)
+    void Engine::processEvents()
     {
-        if (_currentSession.get())
+        sf::Event event;
+        Keyboard::resetKeys();
+
+        while (_window.pollEvent(event))
         {
-            _currentSession->update(dt);
+            processEvent(event);
         }
     }
 
-    void Engine::draw(sf::RenderTarget &target)
+    void Engine::processEvent(const sf::Event &event)
+    {
+        if (event.type == sf::Event::Closed)
+        {
+            _window.close();
+        }
+        // catch the resize events
+        else if (event.type == sf::Event::Resized)
+        {
+            // update the view to the new size of the window
+            sf::FloatRect visibleArea(0.f, 0.f, event.size.width, event.size.height);
+            _window.setView(sf::View(visibleArea));
+
+            if (_currentSession.get() != nullptr)
+            {
+                sf::Vector2f area(event.size.width, event.size.height);
+                _currentSession->onResize(area);
+            }
+        }
+        else if (event.type == sf::Event::KeyPressed)
+        {
+            Keyboard::setKeyDown(event.key.code);
+        }
+        else if (event.type == sf::Event::KeyReleased)
+        {
+            Keyboard::setKeyUp(event.key.code);
+        }
+    }
+
+    float Engine::deltaTime() const
+    {
+        return _deltaTime;
+    }
+
+    void Engine::preUpdate()
+    {
+        _deltaTime = _timer.getElapsedTime().asSeconds();
+        _timer.restart();
+    }
+
+    void Engine::update()
     {
         if (_currentSession.get())
         {
-            _currentSession->draw(target);
+            _currentSession->update(_deltaTime);
         }
+    }
+
+    void Engine::draw()
+    {
+        _window.clear();
+        if (_currentSession.get())
+        {
+            _currentSession->draw(_window);
+        }
+        _window.display();
     }
 }

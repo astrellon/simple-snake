@@ -17,7 +17,7 @@ namespace town
     class Engine : private NonCopyable
     {
         public:
-            Engine();
+            Engine(sf::RenderWindow &window);
             ~Engine();
 
             FontManager &fontManager() const;
@@ -28,13 +28,21 @@ namespace town
             float spriteScale() const;
             void spriteScale(float scale);
 
+            sf::Vector2u windowSize() const;
+
             GameSession *currentSession() const;
             GameSession *startGameSession();
 
             void readDataPaths(const std::string &filename);
 
-            void update(float dt);
-            void draw(sf::RenderTarget &target);
+            void processEvents();
+            void processEvent(const sf::Event &event);
+
+            float deltaTime() const;
+
+            void preUpdate();
+            void update();
+            void draw();
 
         private:
             mutable FontManager _fontManager;
@@ -44,5 +52,8 @@ namespace town
 
             float _spriteScale;
             std::unique_ptr<GameSession> _currentSession;
+            sf::RenderWindow &_window;
+            sf::Clock _timer;
+            float _deltaTime;
     };
 } // town
