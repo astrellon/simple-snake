@@ -140,9 +140,13 @@ namespace town
         }
     }
 
-    const sf::Time Engine::deltaTime() const
+    sf::Time Engine::deltaTime() const
     {
         return _deltaTime;
+    }
+    sf::Time Engine::timeSinceStart() const
+    {
+        return _timerSinceStart.getElapsedTime();
     }
 
     void Engine::preUpdate()

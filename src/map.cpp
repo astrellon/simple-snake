@@ -1,10 +1,13 @@
 #include "map.hpp"
 
+#include <iostream>
+
 #include <SFML/Graphics.hpp>
 
 #include "engine.hpp"
 #include "game_session.hpp"
 #include "snake.hpp"
+#include "utils.hpp"
 
 namespace town
 {
@@ -80,26 +83,57 @@ namespace town
         return tileData < 8;
     }
 
-    bool Map::hitApple(sf::Vector2i position)
+    Map::AppleList::iterator Map::willHitApple(sf::Vector2i position)
     {
         for (auto iter = _apples.begin(); iter != _apples.end(); ++iter)
         {
             if (iter->position() == position)
             {
-                _apples.erase(iter);
-                return true;
+                return iter;
             }
+        }
+
+        return _apples.end();
+    }
+
+    bool Map::hitApple(sf::Vector2i position)
+    {
+        auto apple = willHitApple(position);
+        if (apple != _apples.end())
+        {
+            _apples.erase(apple);
+            return true;
         }
 
         return false;
     }
 
+    void Map::spawnApple()
+    {
+        auto counter = 10;
+        while(counter--)
+        {
+            auto posX = Utils::randi(0, _width);
+            auto posY = Utils::randi(0, _height);
+            sf::Vector2i pos(posX, posY);
+            if (canMoveTo(pos) && willHitApple(pos) == _apples.end())
+            {
+                _apples.push_back(Apple(pos));
+                return;
+            }
+        }
+
+        std::cout << "Unable to find a place to put apple" << std::endl;
+    }
+
     void Map::update(Engine *engine, sf::Time dt)
     {
         auto &player = engine->currentSession()->player();
-        if (player.length() >= 5)
+        auto time = engine->timeSinceStart() - _lastSpawnTime;
+        if (time.asSeconds() > 4.0f)
         {
-
+            _lastSpawnTime = engine->timeSinceStart();
+            spawnApple();
         }
     }
 

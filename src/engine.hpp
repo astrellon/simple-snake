@@ -43,7 +43,8 @@ namespace town
             void processEvents();
             void processEvent(const sf::Event &event);
 
-            const sf::Time deltaTime() const;
+            sf::Time deltaTime() const;
+            sf::Time timeSinceStart() const;
 
             void preUpdate();
             void update();
@@ -60,6 +61,7 @@ namespace town
             std::unique_ptr<GameSession> _currentSession;
             sf::RenderWindow &_window;
             sf::Clock _timer;
+            sf::Clock _timerSinceStart;
             sf::Time _deltaTime;
     };
 } // town
