@@ -18,9 +18,11 @@ namespace town
             Map *currentMap() const;
             void currentMap(Map *map);
 
+            Snake &player();
+
             void onResize(sf::Vector2f area);
 
-            void update(float dt);
+            void update(sf::Time dt);
             void draw(sf::RenderTarget &target);
 
         private:

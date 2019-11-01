@@ -11,7 +11,7 @@
 namespace town
 {
     Engine::Engine(sf::RenderWindow &window) :
-        _spriteScale(1.0f), _spriteSize(16.0f), _window(window), _deltaTime(0.0f)
+        _spriteScale(1.0f), _spriteSize(16.0f), _window(window), _deltaTime(sf::Time::Zero)
     {
 
     }
@@ -140,14 +140,14 @@ namespace town
         }
     }
 
-    float Engine::deltaTime() const
+    const sf::Time Engine::deltaTime() const
     {
         return _deltaTime;
     }
 
     void Engine::preUpdate()
     {
-        _deltaTime = _timer.getElapsedTime().asSeconds();
+        _deltaTime = _timer.getElapsedTime();
         _timer.restart();
     }
 

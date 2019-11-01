@@ -3,6 +3,8 @@
 #include <SFML/Graphics.hpp>
 
 #include "engine.hpp"
+#include "game_session.hpp"
+#include "snake.hpp"
 
 namespace town
 {
@@ -14,9 +16,6 @@ namespace town
         {
             _data[i] = 0;
         }
-
-        _apples.push_back(Apple(sf::Vector2i(3, 0)));
-        _apples.push_back(Apple(sf::Vector2i(6, 1)));
     }
 
     Map::~Map()
@@ -95,9 +94,13 @@ namespace town
         return false;
     }
 
-    void Map::update(float dt)
+    void Map::update(Engine *engine, sf::Time dt)
     {
+        auto &player = engine->currentSession()->player();
+        if (player.length() >= 5)
+        {
 
+        }
     }
 
     void Map::draw(Engine *engine, sf::RenderTarget &target)

@@ -23,16 +23,21 @@ namespace town
         _currentMap = map;
     }
 
+    Snake &GameSession::player()
+    {
+        return _player;
+    }
+
     void GameSession::onResize(sf::Vector2f area)
     {
         _camera.setSize(area);
     }
 
-    void GameSession::update(float dt)
+    void GameSession::update(sf::Time dt)
     {
         if (_currentMap != nullptr)
         {
-            _currentMap->update(dt);
+            _currentMap->update(_engine, dt);
             _player.update(_currentMap, dt);
         }
     }

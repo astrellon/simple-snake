@@ -24,7 +24,12 @@ namespace town
         return *_positions.rbegin();
     }
 
-    void Snake::update(Map *map, float dt)
+    std::size_t Snake::length() const
+    {
+        return _positions.size();
+    }
+
+    void Snake::update(Map *map, sf::Time dt)
     {
         sf::Vector2i move;
         if (Keyboard::isKeyDown(sf::Keyboard::A))

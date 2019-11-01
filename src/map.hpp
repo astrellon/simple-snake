@@ -36,7 +36,7 @@ namespace town
             bool canMoveTo(sf::Vector2i position) const;
             bool hitApple(sf::Vector2i position);
 
-            void update(float dt);
+            void update(Engine *engine, sf::Time dt);
             void draw(Engine *engine, sf::RenderTarget &target);
 
         private:
@@ -45,5 +45,6 @@ namespace town
             uint _height;
             MapData _data;
             AppleList _apples;
+
     };
 } // town
