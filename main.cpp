@@ -14,7 +14,7 @@
 
 int main()
 {
-    sf::RenderWindow window(sf::VideoMode(1280, 800), "SFML works!");
+    sf::RenderWindow window(sf::VideoMode(1280, 800), "Snake");
 
     town::Engine engine(window);
     engine.spriteScale(4.0f);
