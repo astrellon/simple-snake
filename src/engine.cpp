@@ -11,7 +11,7 @@
 namespace town
 {
     Engine::Engine(sf::RenderWindow &window) :
-        _spriteScale(1.0f), _window(window), _deltaTime(0.0f)
+        _spriteScale(1.0f), _spriteSize(16.0f), _window(window), _deltaTime(0.0f)
     {
 
     }
@@ -47,6 +47,20 @@ namespace town
     void Engine::spriteScale(float scale)
     {
         _spriteScale = scale;
+    }
+
+    float Engine::spriteSize() const
+    {
+        return _spriteSize;
+    }
+    void Engine::spriteSize(float size)
+    {
+        _spriteSize = size;
+    }
+
+    float Engine::spriteScaleCombined() const
+    {
+        return _spriteSize * _spriteScale;
     }
 
     sf::Vector2u Engine::windowSize() const

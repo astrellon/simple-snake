@@ -24,7 +24,7 @@ int main()
     auto tileTexture = engine.textureManager().texture("tiles");
 
     auto &tiles = engine.tiles();
-    tiles.init(tileTexture, 16, engine.spriteScale());
+    tiles.init(tileTexture, static_cast<uint>(engine.spriteSize()), engine.spriteScale());
 
     auto &mapManager = engine.mapManager();
     auto map1 = mapManager.loadMap("data/testMap.csv");

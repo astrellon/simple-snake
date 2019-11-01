@@ -103,7 +103,7 @@ namespace town
     void Map::draw(Engine *engine, sf::RenderTarget &target)
     {
         auto scale = engine->spriteScale();
-        auto size = 16.0f * scale;
+        auto combinedScale = engine->spriteScaleCombined();
 
         auto x = 0, y = 0;
         for (const auto tile : _data)
@@ -114,7 +114,7 @@ namespace town
                 continue;
             }
 
-            sprite->setPosition(size * x, size * y);
+            sprite->setPosition(combinedScale * x, combinedScale * y);
             target.draw(*sprite);
 
             x++;
@@ -132,7 +132,7 @@ namespace town
             for (const auto &apple : _apples)
             {
                 auto pos = apple.position();
-                appleSprite.setPosition(size * pos.x, size * pos.y);
+                appleSprite.setPosition(combinedScale * pos.x, combinedScale * pos.y);
                 target.draw(appleSprite);
             }
         }

@@ -28,6 +28,11 @@ namespace town
             float spriteScale() const;
             void spriteScale(float scale);
 
+            float spriteSize() const;
+            void spriteSize(float size);
+
+            float spriteScaleCombined() const;
+
             sf::Vector2u windowSize() const;
 
             GameSession *currentSession() const;
@@ -51,6 +56,7 @@ namespace town
             mutable Tiles _tiles;
 
             float _spriteScale;
+            float _spriteSize;
             std::unique_ptr<GameSession> _currentSession;
             sf::RenderWindow &_window;
             sf::Clock _timer;

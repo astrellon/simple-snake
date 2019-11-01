@@ -68,8 +68,8 @@ namespace town
 
     void Snake::draw(Engine *engine, sf::RenderTarget &target)
     {
-        float scale = engine->spriteScale();
-        const float size = 16.0f * scale;
+        const float scale = engine->spriteScale();
+        const float size = engine->spriteSize() * scale;
 
         auto *texture = engine->textureManager().texture("snake");
         if (texture == nullptr)

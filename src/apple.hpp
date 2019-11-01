@@ -11,6 +11,7 @@ namespace town
             ~Apple();
 
             sf::Vector2i position() const;
+
         private:
             sf::Vector2i _position;
 
