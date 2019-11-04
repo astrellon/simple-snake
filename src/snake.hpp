@@ -16,10 +16,14 @@ namespace town
             Snake();
             ~Snake();
 
-            void update(Map *map, float dt);
+            void update(Map *map, sf::Time dt);
             void draw(Engine *engine, sf::RenderTarget &target);
 
             typedef std::vector<sf::Vector2i> PositionList;
+
+            sf::Vector2i head_position() const;
+
+            std::size_t length() const;
 
         private:
             PositionList _positions;

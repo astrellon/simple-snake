@@ -1,7 +1,7 @@
 # Data CSV File
 # type, name, filepath
-# font, sans, NotoSans-Regular.ttf
-font, sans, PixelOperator.ttf
-texture, tiles, tiles.png
+font, sans, NotoSans-Regular.ttf
+texture, mapTiles, tiles.png
 texture, snake, snake.png
+texture, snakeTiles, snakeTiles.png
 texture, apple, apple.png

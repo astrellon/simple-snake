@@ -23,11 +23,21 @@ namespace town
         _currentMap = map;
     }
 
-    void GameSession::update(float dt)
+    Snake &GameSession::player()
+    {
+        return _player;
+    }
+
+    void GameSession::onResize(sf::Vector2f area)
+    {
+        _camera.setSize(area);
+    }
+
+    void GameSession::update(sf::Time dt)
     {
         if (_currentMap != nullptr)
         {
-            _currentMap->update(dt);
+            _currentMap->update(_engine, dt);
             _player.update(_currentMap, dt);
         }
     }
@@ -36,6 +46,15 @@ namespace town
     {
         if (_currentMap != nullptr)
         {
+            auto scale = _engine->spriteScale() * _engine->spriteSize();
+            auto head_position = _player.head_position();
+            sf::Vector2f cam_position = sf::Vector2f(head_position.x * scale, head_position.y * scale);
+            cam_position.x += 32.0f;
+            cam_position.y += 32.0f;
+
+            _camera.setCenter(cam_position);
+            target.setView(_camera);
+
             _currentMap->draw(_engine, target);
             _player.draw(_engine, target);
         }

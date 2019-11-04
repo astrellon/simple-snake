@@ -1,5 +1,7 @@
 #pragma once
 
+#include <SFML/Graphics.hpp>
+
 #include "snake.hpp"
 
 namespace town
@@ -16,12 +18,17 @@ namespace town
             Map *currentMap() const;
             void currentMap(Map *map);
 
-            void update(float dt);
+            Snake &player();
+
+            void onResize(sf::Vector2f area);
+
+            void update(sf::Time dt);
             void draw(sf::RenderTarget &target);
 
         private:
             Map *_currentMap;
             Engine *_engine;
             Snake _player;
+            sf::View _camera;
     };
 } // town

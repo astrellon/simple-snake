@@ -10,23 +10,25 @@
 #include "src/map.hpp"
 #include "src/tiles.hpp"
 #include "src/snake.hpp"
-#include "src/keyboard.hpp"
 #include "src/game_session.hpp"
 
 int main()
 {
-    sf::RenderWindow window(sf::VideoMode(1280, 800), "SFML works!");
-    window.setVerticalSyncEnabled(true);
+    sf::RenderWindow window(sf::VideoMode(1280, 800), "Snake");
 
-    town::Engine engine;
+    town::Engine engine(window);
     engine.spriteScale(4.0f);
     engine.readDataPaths("data/data.csv");
 
     auto sansFont = engine.fontManager().font("sans");
-    auto tileTexture = engine.textureManager().texture("tiles");
+    auto tileTexture = engine.textureManager().texture("mapTiles");
+    auto snakeTexture = engine.textureManager().texture("snakeTiles");
 
-    auto &tiles = engine.tiles();
-    tiles.init(tileTexture, 16, engine.spriteScale());
+    auto &mapTiles = engine.mapTiles();
+    mapTiles.init(tileTexture, static_cast<uint>(engine.spriteSize()), engine.spriteScale());
+
+    auto &snakeTiles = engine.snakeTiles();
+    snakeTiles.init(snakeTexture, static_cast<uint>(engine.spriteSize()), engine.spriteScale());
 
     auto &mapManager = engine.mapManager();
     auto map1 = mapManager.loadMap("data/testMap.csv");
@@ -40,48 +42,16 @@ int main()
     gameSession->currentMap(map1);
 
     // Create a text
-    sf::Text text("hello", *sansFont);
-    text.setCharacterSize(60);
-
-    sf::Clock timer;
+    // sf::Text text("hello", *sansFont);
+    // text.setCharacterSize(72);
 
     while (window.isOpen())
     {
-        sf::Event event;
-        town::Keyboard::resetKeys();
+        engine.processEvents();
 
-        while (window.pollEvent(event))
-        {
-            if (event.type == sf::Event::Closed)
-            {
-                window.close();
-            }
-            // catch the resize events
-            else if (event.type == sf::Event::Resized)
-            {
-                // update the view to the new size of the window
-                sf::FloatRect visibleArea(0.f, 0.f, event.size.width, event.size.height);
-                window.setView(sf::View(visibleArea));
-            }
-            else if (event.type == sf::Event::KeyPressed)
-            {
-                town::Keyboard::setKeyDown(event.key.code);
-            }
-            else if (event.type == sf::Event::KeyReleased)
-            {
-                town::Keyboard::setKeyUp(event.key.code);
-            }
-        }
-
-        auto deltaTime = timer.getElapsedTime().asSeconds();
-        timer.restart();
-
-        engine.update(deltaTime);
-
-        window.clear();
-        engine.draw(window);
-        window.draw(text);
-        window.display();
+        engine.preUpdate();
+        engine.update();
+        engine.draw();
     }
 
     return 0;

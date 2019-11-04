@@ -34,9 +34,11 @@ namespace town
             int tile(int x, int y) const;
 
             bool canMoveTo(sf::Vector2i position) const;
+            AppleList::iterator willHitApple(sf::Vector2i position);
             bool hitApple(sf::Vector2i position);
+            void spawnApple();
 
-            void update(float dt);
+            void update(Engine *engine, sf::Time dt);
             void draw(Engine *engine, sf::RenderTarget &target);
 
         private:
@@ -45,5 +47,8 @@ namespace town
             uint _height;
             MapData _data;
             AppleList _apples;
+
+            sf::Time _lastSpawnTime;
+
     };
 } // town
