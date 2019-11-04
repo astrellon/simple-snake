@@ -23,7 +23,8 @@ namespace town
             FontManager &fontManager() const;
             TextureManager &textureManager() const;
             MapManager &mapManager() const;
-            Tiles &tiles() const;
+            Tiles &mapTiles() const;
+            Tiles &snakeTiles() const;
 
             float spriteScale() const;
             void spriteScale(float scale);
@@ -54,7 +55,8 @@ namespace town
             mutable FontManager _fontManager;
             mutable TextureManager _textureManager;
             mutable MapManager _mapManager;
-            mutable Tiles _tiles;
+            mutable Tiles _mapTiles;
+            mutable Tiles _snakeTiles;
 
             float _spriteScale;
             float _spriteSize;

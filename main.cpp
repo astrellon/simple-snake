@@ -21,10 +21,14 @@ int main()
     engine.readDataPaths("data/data.csv");
 
     auto sansFont = engine.fontManager().font("sans");
-    auto tileTexture = engine.textureManager().texture("tiles");
+    auto tileTexture = engine.textureManager().texture("mapTiles");
+    auto snakeTexture = engine.textureManager().texture("snakeTiles");
 
-    auto &tiles = engine.tiles();
-    tiles.init(tileTexture, static_cast<uint>(engine.spriteSize()), engine.spriteScale());
+    auto &mapTiles = engine.mapTiles();
+    mapTiles.init(tileTexture, static_cast<uint>(engine.spriteSize()), engine.spriteScale());
+
+    auto &snakeTiles = engine.snakeTiles();
+    snakeTiles.init(snakeTexture, static_cast<uint>(engine.spriteSize()), engine.spriteScale());
 
     auto &mapManager = engine.mapManager();
     auto map1 = mapManager.loadMap("data/testMap.csv");

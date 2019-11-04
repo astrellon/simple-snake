@@ -35,9 +35,13 @@ namespace town
         return _mapManager;
     }
 
-    Tiles &Engine::tiles() const
+    Tiles &Engine::mapTiles() const
     {
-        return _tiles;
+        return _mapTiles;
+    }
+    Tiles &Engine::snakeTiles() const
+    {
+        return _snakeTiles;
     }
 
     float Engine::spriteScale() const

@@ -145,7 +145,7 @@ namespace town
         auto x = 0, y = 0;
         for (const auto tile : _data)
         {
-            auto *sprite = engine->tiles().getSprite(tile);
+            auto *sprite = engine->mapTiles().getSprite(tile);
             if (sprite == nullptr)
             {
                 continue;
