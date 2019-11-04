@@ -158,11 +158,25 @@ namespace town
                 {
                     if (prevDiff.y == 0)
                     {
-                        rotation = prevDiff.x < 0 ? 180 : 0;
+                        if (prevDiff.x < 0)
+                        {
+                            rotation = nextDiff.y < 0 ? 180 : 270;
+                        }
+                        else
+                        {
+                            rotation = nextDiff.y < 0 ? 90 : 0;
+                        }
                     }
                     else
                     {
-                        rotation = prevDiff.y < 0 ? 270 : 90;
+                        if (prevDiff.y < 0)
+                        {
+                            rotation = nextDiff.x < 0 ? 0 : 270;
+                        }
+                        else
+                        {
+                            rotation = nextDiff.x < 0 ? 90 : 180;
+                        }
                     }
                 }
 
