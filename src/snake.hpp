@@ -29,5 +29,10 @@ namespace town
             PositionList _positions;
             int _length;
             bool _keyPressed;
+            bool _altSpriteIndex;
+
+            void drawSprite(Engine *engine, sf::RenderTarget &target, sf::Vector2i position, float rotation, int index);
+
+            static int indexOffset(bool alt);
     };
 } // town
