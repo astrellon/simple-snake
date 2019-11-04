@@ -21,9 +21,10 @@ namespace town
 
             typedef std::vector<sf::Vector2i> PositionList;
 
-            sf::Vector2i head_position() const;
-
+            bool willHitSnake(sf::Vector2i position) const;
+            sf::Vector2i headPosition() const;
             std::size_t length() const;
+            void length(std::size_t newLength);
 
         private:
             PositionList _positions;

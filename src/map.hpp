@@ -13,6 +13,7 @@
 namespace town
 {
     class Engine;
+    class GameSession;
 
     class Map : private NonCopyable
     {
@@ -36,7 +37,7 @@ namespace town
             bool canMoveTo(sf::Vector2i position) const;
             AppleList::iterator willHitApple(sf::Vector2i position);
             bool hitApple(sf::Vector2i position);
-            void spawnApple();
+            void spawnApple(GameSession *gameSession);
 
             void update(Engine *engine, sf::Time dt);
             void draw(Engine *engine, sf::RenderTarget &target);

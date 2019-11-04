@@ -108,7 +108,7 @@ namespace town
         return false;
     }
 
-    void Map::spawnApple()
+    void Map::spawnApple(GameSession *gameSession)
     {
         auto counter = 10;
         while(counter--)
@@ -118,6 +118,11 @@ namespace town
             sf::Vector2i pos(posX, posY);
             if (canMoveTo(pos) && willHitApple(pos) == _apples.end())
             {
+                if (gameSession != nullptr && gameSession->player().willHitSnake(pos))
+                {
+                    continue;
+                }
+
                 _apples.push_back(Apple(pos));
                 return;
             }
@@ -133,7 +138,10 @@ namespace town
         if (time.asSeconds() > 4.0f)
         {
             _lastSpawnTime = engine->timeSinceStart();
-            spawnApple();
+            if (_apples.size() < 10)
+            {
+                spawnApple(engine->currentSession());
+            }
         }
     }
 

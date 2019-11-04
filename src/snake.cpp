@@ -19,7 +19,12 @@ namespace town
 
     }
 
-    sf::Vector2i Snake::head_position() const
+    bool Snake::willHitSnake(sf::Vector2i position) const
+    {
+        return std::find(_positions.begin(), _positions.end(), position) != _positions.end();
+    }
+
+    sf::Vector2i Snake::headPosition() const
     {
         return *_positions.rbegin();
     }
@@ -27,6 +32,10 @@ namespace town
     std::size_t Snake::length() const
     {
         return _positions.size();
+    }
+    void Snake::length(std::size_t newLength)
+    {
+        _length = newLength;
     }
 
     void Snake::update(Map *map, sf::Time dt)
@@ -55,21 +64,35 @@ namespace town
         if (move.x != 0 || move.y != 0)
         {
             auto newPosition = *_positions.rbegin() + move;
-            if (map->canMoveTo(newPosition))
+            if (willHitSnake(newPosition))
             {
-                if (map->hitApple(newPosition))
+                if (_positions.size() > 1 && newPosition == *(_positions.rbegin() + 1))
                 {
-                    _length++;
+                    std::cout << "not a real hit" << std::endl;
                 }
-
-                _positions.push_back(newPosition);
-                if (_positions.size() > _length)
+                else
                 {
-                    _positions.erase(_positions.begin());
+                    std::cout << "oh no!" << std::endl;
                 }
             }
+            else
+            {
+                if (map->canMoveTo(newPosition))
+                {
+                    if (map->hitApple(newPosition))
+                    {
+                        _length++;
+                    }
 
-            _altSpriteIndex = !_altSpriteIndex;
+                    _positions.push_back(newPosition);
+                    if (_positions.size() > _length)
+                    {
+                        _positions.erase(_positions.begin());
+                    }
+                }
+
+                _altSpriteIndex = !_altSpriteIndex;
+            }
         }
     }
 
