@@ -48,9 +48,7 @@ namespace town
         {
             auto scale = _engine->spriteScale() * _engine->spriteSize();
             auto head_position = _player.head_position();
-            sf::Vector2f cam_position = sf::Vector2f(head_position.x * scale, head_position.y * scale);
-            cam_position.x += 32.0f;
-            cam_position.y += 32.0f;
+            sf::Vector2f cam_position = sf::Vector2f(_currentMap->width() * scale * 0.5f, _currentMap->height() * scale * 0.5f);
 
             _camera.setCenter(cam_position);
             target.setView(_camera);

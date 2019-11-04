@@ -15,6 +15,7 @@
 int main()
 {
     sf::RenderWindow window(sf::VideoMode(1280, 800), "Snake");
+    window.setVerticalSyncEnabled(true);
 
     town::Engine engine(window);
     engine.spriteScale(4.0f);
