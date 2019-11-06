@@ -9,10 +9,25 @@
 
 namespace town
 {
+    SnakePosition::SnakePosition(sf::Vector2i pos, sf::Vector2i diff) :
+        _pos(pos), _diff(diff), _tileIndex(0), _rotation(0.0f), _inPortal(false)
+    {
+
+    }
+    SnakePosition::SnakePosition(sf::Vector2i pos, sf::Vector2i diff, int tileIndex, float rotation, bool inPortal) :
+        _pos(pos), _diff(diff), _tileIndex(tileIndex), _rotation(rotation), _inPortal(inPortal)
+    {
+
+    }
+
+    SnakePosition::~SnakePosition()
+    {
+
+    }
+
     Snake::Snake() : _length(3), _altSpriteIndex(false)
     {
-        _positions.push_back(sf::Vector2i(0, 0));
-        _positionsDiffs.push_back(sf::Vector2i(0, 0));
+        _positions.push_back(SnakePosition(sf::Vector2i(0, 0), sf::Vector2i(0, 0)));
     }
 
     Snake::~Snake()
@@ -22,12 +37,55 @@ namespace town
 
     bool Snake::willHitSnake(sf::Vector2i position) const
     {
-        return std::find(_positions.begin(), _positions.end(), position) != _positions.end();
+        for (const auto &pos : _positions)
+        {
+            if (pos.pos() == position)
+            {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     sf::Vector2i Snake::headPosition() const
     {
-        return *_positions.rbegin();
+        return (*_positions.rbegin()).pos();
+    }
+
+    sf::Vector2i Snake::neckPosition() const
+    {
+        return (*(_positions.rbegin() + 1)).pos();
+    }
+
+    sf::Vector2i Snake::anklePosition() const
+    {
+        return (*(_positions.begin() + 1)).pos();
+    }
+
+    sf::Vector2i Snake::tailPosition() const
+    {
+        return (*_positions.begin()).pos();
+    }
+
+    SnakePosition &Snake::headData()
+    {
+        return (*_positions.rbegin());
+    }
+
+    SnakePosition &Snake::neckData()
+    {
+        return (*(_positions.rbegin() + 1));
+    }
+
+    SnakePosition &Snake::ankleData()
+    {
+        return (*(_positions.begin() + 1));
+    }
+
+    SnakePosition &Snake::tailData()
+    {
+        return (*_positions.begin());
     }
 
     std::size_t Snake::length() const
@@ -64,10 +122,10 @@ namespace town
 
         if (move.x != 0 || move.y != 0)
         {
-            auto newPosition = *_positions.rbegin() + move;
+            auto newPosition = headPosition() + move;
             if (willHitSnake(newPosition))
             {
-                if (_positions.size() > 1 && newPosition == *(_positions.rbegin() + 1))
+                if (_positions.size() > 1 && newPosition == neckPosition())
                 {
                     std::cout << "not a real hit" << std::endl;
                 }
@@ -80,7 +138,7 @@ namespace town
             {
                 if (map->canMoveTo(newPosition))
                 {
-                    auto diff = newPosition - *(_positions.rbegin());
+                    auto diff = newPosition - headPosition();
                     if (map->hitApple(newPosition))
                     {
                         _length++;
@@ -94,13 +152,7 @@ namespace town
                         }
                     }
 
-                    _positions.push_back(newPosition);
-                    _positionsDiffs.push_back(diff);
-                    if (_positions.size() > _length)
-                    {
-                        _positions.erase(_positions.begin());
-                        _positionsDiffs.erase(_positionsDiffs.begin());
-                    }
+                    addNewPosition(newPosition, diff);
                 }
 
                 _altSpriteIndex = !_altSpriteIndex;
@@ -119,103 +171,14 @@ namespace town
 
         if (_positions.size() == 1)
         {
-            drawSprite(engine, target, _positions[0], 0, 0 + indexOffset(altSpriteIndex));
+            drawSprite(engine, target, _positions[0].pos(), 0, 0 + indexOffset(altSpriteIndex));
             altSpriteIndex = !altSpriteIndex;
         }
         else
         {
+            for (const auto &pos : _positions)
             {
-                auto tailPos = _positions[0];
-                auto diff = _positionsDiffs[1];
-                auto rotation = 0.0f;
-
-                if (diff.y == 0)
-                {
-                    rotation = diff.x < 0 ? 180.0f : 0.0f;
-                }
-                else
-                {
-                    rotation = diff.y < 0 ? 270.0f : 90.0f;
-                }
-
-                drawSprite(engine, target, tailPos, rotation, 1 + indexOffset(altSpriteIndex));
-                altSpriteIndex = !altSpriteIndex;
-            }
-
-            for (auto i = 1; i < _positions.size() - 1; i++)
-            {
-                const auto &prevPos = _positions[i - 1];
-                const auto &pos = _positions[i];
-                const auto &nextPos = _positions[i + 1];
-
-                auto prevDiff = _positionsDiffs[i];
-                auto nextDiff = _positionsDiffs[i + 1];
-                auto isBend = prevDiff == nextDiff;
-                auto index = isBend ? 2 : 8;
-
-                auto rotation = 0.0f;
-
-                if (isBend)
-                {
-                    if (prevDiff.y == 0)
-                    {
-                        rotation = prevDiff.x < 0 ? 180 : 0;
-                    }
-                    else
-                    {
-                        rotation = prevDiff.y < 0 ? 270 : 90;
-                    }
-                }
-                else
-                {
-                    if (prevDiff.y == 0)
-                    {
-                        if (prevDiff.x < 0)
-                        {
-                            rotation = nextDiff.y < 0 ? 180 : 270;
-                        }
-                        else
-                        {
-                            rotation = nextDiff.y < 0 ? 90 : 0;
-                        }
-                    }
-                    else
-                    {
-                        if (prevDiff.y < 0)
-                        {
-                            rotation = nextDiff.x < 0 ? 0 : 270;
-                        }
-                        else
-                        {
-                            rotation = nextDiff.x < 0 ? 90 : 180;
-                        }
-                    }
-                }
-
-                drawSprite(engine, target, pos, rotation, index + indexOffset(altSpriteIndex));
-                altSpriteIndex = !altSpriteIndex;
-            }
-
-            {
-                auto end = _positions.rbegin();
-                auto headPos = *end;
-                end++;
-                auto prevPos = *end;
-                auto diff = *(_positionsDiffs.rbegin());
-                auto headSprite = engine->snakeTiles().getSprite(3);
-                auto rotation = 0.0f;
-
-                if (diff.y == 0)
-                {
-                    rotation = diff.x < 0 ? 180.0f : 0.0f;
-                }
-                else
-                {
-                    rotation = diff.y < 0 ? 270.0f : 90.0f;
-                }
-
-                drawSprite(engine, target, headPos, rotation, 3 + indexOffset(altSpriteIndex));
-                altSpriteIndex = !altSpriteIndex;
+                drawSprite(engine, target, pos.pos(), pos.rotation(), pos.tileIndex());
             }
         }
     }
@@ -236,6 +199,106 @@ namespace town
         sprite->setRotation(rotation);
 
         target.draw(*sprite);
+    }
+
+    void Snake::addNewPosition(sf::Vector2i newPosition, sf::Vector2i diff)
+    {
+        _positions.push_back(SnakePosition(newPosition, diff));
+        if (_positions.size() > _length)
+        {
+            _positions.erase(_positions.begin());
+        }
+
+        {
+            auto &tailPos = tailData();
+            auto diff = ankleData().diff();
+            auto rotation = 0.0f;
+
+            if (diff.y == 0)
+            {
+                rotation = diff.x < 0 ? 180.0f : 0.0f;
+            }
+            else
+            {
+                rotation = diff.y < 0 ? 270.0f : 90.0f;
+            }
+
+            tailPos.rotation(rotation);
+            tailPos.tileIndex(1);
+        }
+
+        for (auto i = 1; i < _positions.size() - 1; i++)
+        {
+            const auto &prevPos = _positions[i - 1];
+            auto &pos = _positions[i];
+            const auto &nextPos = _positions[i + 1];
+
+            auto prevDiff = pos.diff();
+            auto nextDiff = nextPos.diff();
+            auto isBend = prevDiff == nextDiff;
+            auto index = isBend ? 2 : 8;
+
+            auto rotation = 0.0f;
+
+            if (isBend)
+            {
+                if (prevDiff.y == 0)
+                {
+                    rotation = prevDiff.x < 0 ? 180 : 0;
+                }
+                else
+                {
+                    rotation = prevDiff.y < 0 ? 270 : 90;
+                }
+            }
+            else
+            {
+                if (prevDiff.y == 0)
+                {
+                    if (prevDiff.x < 0)
+                    {
+                        rotation = nextDiff.y < 0 ? 180 : 270;
+                    }
+                    else
+                    {
+                        rotation = nextDiff.y < 0 ? 90 : 0;
+                    }
+                }
+                else
+                {
+                    if (prevDiff.y < 0)
+                    {
+                        rotation = nextDiff.x < 0 ? 0 : 270;
+                    }
+                    else
+                    {
+                        rotation = nextDiff.x < 0 ? 90 : 180;
+                    }
+                }
+            }
+
+            pos.rotation(rotation);
+            pos.tileIndex(index);
+        }
+
+        {
+            auto &headPos = headData();
+            const auto &prevPos = neckData();
+            auto diff = headData().diff();
+            auto rotation = 0.0f;
+
+            if (diff.y == 0)
+            {
+                rotation = diff.x < 0 ? 180.0f : 0.0f;
+            }
+            else
+            {
+                rotation = diff.y < 0 ? 270.0f : 90.0f;
+            }
+
+            headPos.rotation(rotation);
+            headPos.tileIndex(3);
+        }
     }
 
     int Snake::indexOffset(bool alt)
