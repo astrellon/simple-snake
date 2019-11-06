@@ -9,6 +9,7 @@
 #include "non_copyable.hpp"
 #include "vector_comparer.hpp"
 #include "apple.hpp"
+#include "portal.hpp"
 
 namespace town
 {
@@ -25,7 +26,7 @@ namespace town
 
             typedef std::vector<int> MapData;
             typedef std::vector<Apple> AppleList;
-            typedef std::vector<std::pair<sf::Vector2i, sf::Vector2i>> PortalList;
+            typedef std::vector<std::unique_ptr<Portal>> PortalList;
 
             MapData &mapData();
             const MapData &mapData() const;

@@ -133,20 +133,20 @@ namespace town
 
     void Map::addPortal(sf::Vector2i pos1, sf::Vector2i pos2)
     {
-        _portals.emplace_back(pos1, pos2);
+        _portals.emplace_back(std::make_unique<Portal>(pos1, pos2));
     }
     bool Map::willHitPortal(sf::Vector2i pos1, sf::Vector2i *result)
     {
-        for (auto &iter : _portals)
+        for (auto &portal : _portals)
         {
-            if (iter.first == pos1)
+            if (portal->pos1() == pos1)
             {
-                *result = iter.second;
+                *result = portal->pos2();
                 return true;
             }
-            if (iter.second == pos1)
+            if (portal->pos2() == pos1)
             {
-                *result = iter.first;
+                *result = portal->pos1();
                 return true;
             }
         }
@@ -205,20 +205,9 @@ namespace town
             }
         }
 
-        if (_portals.size() > 0)
+        for (const auto &portal : _portals)
         {
-            auto sprite = engine->portalTiles().getSprite(0);
-
-            for (const auto &portalPair : _portals)
-            {
-                auto pos1 = sf::Vector2f(portalPair.first);
-                sprite->setPosition(pos1 * combinedScale);
-                target.draw(*sprite);
-
-                auto pos2 = sf::Vector2f(portalPair.second);
-                sprite->setPosition(pos2 * combinedScale);
-                target.draw(*sprite);
-            }
+            portal->draw(engine, target);
         }
     }
 }
