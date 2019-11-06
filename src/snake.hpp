@@ -28,6 +28,7 @@ namespace town
 
         private:
             PositionList _positions;
+            PositionList _positionsDiffs;
             int _length;
             bool _keyPressed;
             bool _altSpriteIndex;

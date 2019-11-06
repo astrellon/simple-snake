@@ -25,6 +25,7 @@ namespace town
             MapManager &mapManager() const;
             Tiles &mapTiles() const;
             Tiles &snakeTiles() const;
+            Tiles &portalTiles() const;
 
             float spriteScale() const;
             void spriteScale(float scale);
@@ -57,6 +58,7 @@ namespace town
             mutable MapManager _mapManager;
             mutable Tiles _mapTiles;
             mutable Tiles _snakeTiles;
+            mutable Tiles _portalTiles;
 
             float _spriteScale;
             float _spriteSize;

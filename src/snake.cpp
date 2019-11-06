@@ -12,6 +12,7 @@ namespace town
     Snake::Snake() : _length(3), _altSpriteIndex(false)
     {
         _positions.push_back(sf::Vector2i(0, 0));
+        _positionsDiffs.push_back(sf::Vector2i(0, 0));
     }
 
     Snake::~Snake()
@@ -79,15 +80,26 @@ namespace town
             {
                 if (map->canMoveTo(newPosition))
                 {
+                    auto diff = newPosition - *(_positions.rbegin());
                     if (map->hitApple(newPosition))
                     {
                         _length++;
                     }
+                    else
+                    {
+                        sf::Vector2i portalPosition;
+                        if (map->willHitPortal(newPosition, &portalPosition))
+                        {
+                            newPosition = portalPosition;
+                        }
+                    }
 
                     _positions.push_back(newPosition);
+                    _positionsDiffs.push_back(diff);
                     if (_positions.size() > _length)
                     {
                         _positions.erase(_positions.begin());
+                        _positionsDiffs.erase(_positionsDiffs.begin());
                     }
                 }
 
@@ -114,8 +126,7 @@ namespace town
         {
             {
                 auto tailPos = _positions[0];
-                auto nextPos = _positions[1];
-                auto diff = nextPos - tailPos;
+                auto diff = _positionsDiffs[1];
                 auto rotation = 0.0f;
 
                 if (diff.y == 0)
@@ -137,8 +148,8 @@ namespace town
                 const auto &pos = _positions[i];
                 const auto &nextPos = _positions[i + 1];
 
-                auto prevDiff = pos - prevPos;
-                auto nextDiff = nextPos - pos;
+                auto prevDiff = _positionsDiffs[i];
+                auto nextDiff = _positionsDiffs[i + 1];
                 auto isBend = prevDiff == nextDiff;
                 auto index = isBend ? 2 : 8;
 
@@ -190,7 +201,7 @@ namespace town
                 auto headPos = *end;
                 end++;
                 auto prevPos = *end;
-                auto diff = headPos - prevPos;
+                auto diff = *(_positionsDiffs.rbegin());
                 auto headSprite = engine->snakeTiles().getSprite(3);
                 auto rotation = 0.0f;
 

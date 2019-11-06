@@ -32,6 +32,7 @@ namespace town
         auto find = _textures.find(name);
         if (find == _textures.end())
         {
+            std::cout << "Unable to find texture: " << name << std::endl;
             return nullptr;
         }
 

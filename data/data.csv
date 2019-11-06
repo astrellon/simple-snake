@@ -5,3 +5,4 @@ texture, mapTiles, tiles.png
 texture, snake, snake.png
 texture, snakeTiles, snakeTiles.png
 texture, apple, apple.png
+texture, portalTiles, portalTiles.png

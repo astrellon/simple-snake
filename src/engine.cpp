@@ -43,6 +43,10 @@ namespace town
     {
         return _snakeTiles;
     }
+    Tiles &Engine::portalTiles() const
+    {
+        return _portalTiles;
+    }
 
     float Engine::spriteScale() const
     {

@@ -21,15 +21,24 @@ int main()
     engine.spriteScale(4.0f);
     engine.readDataPaths("data/data.csv");
 
+    auto &textureManager = engine.textureManager();
+
     auto sansFont = engine.fontManager().font("sans");
-    auto tileTexture = engine.textureManager().texture("mapTiles");
-    auto snakeTexture = engine.textureManager().texture("snakeTiles");
+    auto tileTexture = textureManager.texture("mapTiles");
+    auto snakeTexture = textureManager.texture("snakeTiles");
+    auto portalTexture = textureManager.texture("portalTiles");
+
+    auto spriteSize = static_cast<uint>(engine.spriteSize());
+    auto spriteScale = engine.spriteScale();
 
     auto &mapTiles = engine.mapTiles();
-    mapTiles.init(tileTexture, static_cast<uint>(engine.spriteSize()), engine.spriteScale());
+    mapTiles.init(tileTexture, spriteSize, spriteScale);
 
     auto &snakeTiles = engine.snakeTiles();
-    snakeTiles.init(snakeTexture, static_cast<uint>(engine.spriteSize()), engine.spriteScale());
+    snakeTiles.init(snakeTexture, spriteSize, spriteScale);
+
+    auto &portalTiles = engine.portalTiles();
+    portalTiles.init(portalTexture, spriteSize, spriteScale);
 
     auto &mapManager = engine.mapManager();
     auto map1 = mapManager.loadMap("data/testMap.csv");
@@ -38,6 +47,8 @@ int main()
         std::cout << "Cannot play without a map!" << std::endl;
         return 1;
     }
+
+    map1->addPortal(sf::Vector2i(6, 1), sf::Vector2i(6, 6));
 
     auto gameSession = engine.startGameSession();
     gameSession->currentMap(map1);

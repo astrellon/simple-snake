@@ -131,6 +131,29 @@ namespace town
         std::cout << "Unable to find a place to put apple" << std::endl;
     }
 
+    void Map::addPortal(sf::Vector2i pos1, sf::Vector2i pos2)
+    {
+        _portals.emplace_back(pos1, pos2);
+    }
+    bool Map::willHitPortal(sf::Vector2i pos1, sf::Vector2i *result)
+    {
+        for (auto &iter : _portals)
+        {
+            if (iter.first == pos1)
+            {
+                *result = iter.second;
+                return true;
+            }
+            if (iter.second == pos1)
+            {
+                *result = iter.first;
+                return true;
+            }
+        }
+
+        return false;
+    }
+
     void Map::update(Engine *engine, sf::Time dt)
     {
         auto &player = engine->currentSession()->player();
@@ -176,9 +199,25 @@ namespace town
             appleSprite.setScale(scale, scale);
             for (const auto &apple : _apples)
             {
-                auto pos = apple.position();
-                appleSprite.setPosition(combinedScale * pos.x, combinedScale * pos.y);
+                auto pos = sf::Vector2f(apple.position());
+                appleSprite.setPosition(pos * combinedScale);
                 target.draw(appleSprite);
+            }
+        }
+
+        if (_portals.size() > 0)
+        {
+            auto sprite = engine->portalTiles().getSprite(0);
+
+            for (const auto &portalPair : _portals)
+            {
+                auto pos1 = sf::Vector2f(portalPair.first);
+                sprite->setPosition(pos1 * combinedScale);
+                target.draw(*sprite);
+
+                auto pos2 = sf::Vector2f(portalPair.second);
+                sprite->setPosition(pos2 * combinedScale);
+                target.draw(*sprite);
             }
         }
     }

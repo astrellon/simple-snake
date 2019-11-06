@@ -25,6 +25,7 @@ namespace town
 
             typedef std::vector<int> MapData;
             typedef std::vector<Apple> AppleList;
+            typedef std::vector<std::pair<sf::Vector2i, sf::Vector2i>> PortalList;
 
             MapData &mapData();
             const MapData &mapData() const;
@@ -39,6 +40,9 @@ namespace town
             bool hitApple(sf::Vector2i position);
             void spawnApple(GameSession *gameSession);
 
+            void addPortal(sf::Vector2i pos1, sf::Vector2i pos2);
+            bool willHitPortal(sf::Vector2i pos1, sf::Vector2i *result);
+
             void update(Engine *engine, sf::Time dt);
             void draw(Engine *engine, sf::RenderTarget &target);
 
@@ -48,6 +52,7 @@ namespace town
             uint _height;
             MapData _data;
             AppleList _apples;
+            PortalList _portals;
 
             sf::Time _lastSpawnTime;
 
