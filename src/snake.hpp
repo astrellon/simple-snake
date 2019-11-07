@@ -13,7 +13,6 @@ namespace town
     class SnakePosition
     {
         public:
-            SnakePosition(sf::Vector2i pos, sf::Vector2i diff);
             SnakePosition(sf::Vector2i pos, sf::Vector2i diff, int tileIndex, float rotation, bool inPortal);
             ~SnakePosition();
 
@@ -28,6 +27,9 @@ namespace town
 
             inline bool inPortal() const { return _inPortal; }
             inline void inPortal(bool inPortal) { _inPortal = inPortal; }
+
+            static SnakePosition Empty();
+            static SnakePosition Basic(sf::Vector2i pos, sf::Vector2i diff, bool inPortal);
 
         private:
             sf::Vector2i _pos;
@@ -62,15 +64,18 @@ namespace town
             std::size_t length() const;
             void length(std::size_t newLength);
 
+            std::size_t currentLength() const;
+
         private:
             PositionList _positions;
             int _length;
+            int _currentLength;
             bool _keyPressed;
             bool _altSpriteIndex;
 
             void drawSprite(Engine *engine, sf::RenderTarget &target, sf::Vector2i position, float rotation, int index);
 
-            void addNewPosition(sf::Vector2i newPosition, sf::Vector2i diff);
+            void addNewPosition(sf::Vector2i newPosition, sf::Vector2i diff, bool inPortal);
 
             static int indexOffset(bool alt);
     };

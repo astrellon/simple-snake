@@ -9,11 +9,6 @@
 
 namespace town
 {
-    SnakePosition::SnakePosition(sf::Vector2i pos, sf::Vector2i diff) :
-        _pos(pos), _diff(diff), _tileIndex(0), _rotation(0.0f), _inPortal(false)
-    {
-
-    }
     SnakePosition::SnakePosition(sf::Vector2i pos, sf::Vector2i diff, int tileIndex, float rotation, bool inPortal) :
         _pos(pos), _diff(diff), _tileIndex(tileIndex), _rotation(rotation), _inPortal(inPortal)
     {
@@ -25,9 +20,18 @@ namespace town
 
     }
 
-    Snake::Snake() : _length(3), _altSpriteIndex(false)
+    SnakePosition SnakePosition::Empty()
     {
-        _positions.push_back(SnakePosition(sf::Vector2i(0, 0), sf::Vector2i(0, 0)));
+        return SnakePosition(sf::Vector2i(0, 0), sf::Vector2i(0, 0), 0, 0.0f, false);
+    }
+    SnakePosition SnakePosition::Basic(sf::Vector2i pos, sf::Vector2i diff, bool inPortal)
+    {
+        return SnakePosition(pos, diff, 0, 0.0f, inPortal);
+    }
+
+    Snake::Snake() : _length(3), _altSpriteIndex(false), _currentLength(1)
+    {
+        _positions.push_back(SnakePosition::Empty());
     }
 
     Snake::~Snake()
@@ -90,11 +94,16 @@ namespace town
 
     std::size_t Snake::length() const
     {
-        return _positions.size();
+        return _length;
     }
     void Snake::length(std::size_t newLength)
     {
         _length = newLength;
+    }
+
+    std::size_t Snake::currentLength() const
+    {
+        return _currentLength;
     }
 
     void Snake::update(Map *map, sf::Time dt)
@@ -104,18 +113,15 @@ namespace town
         {
             move.x -= 1;
         }
-
-        if (Keyboard::isKeyDown(sf::Keyboard::D))
+        else if (Keyboard::isKeyDown(sf::Keyboard::D))
         {
             move.x += 1;
         }
-
-        if (Keyboard::isKeyDown(sf::Keyboard::W))
+        else if (Keyboard::isKeyDown(sf::Keyboard::W))
         {
             move.y -= 1;
         }
-
-        if (Keyboard::isKeyDown(sf::Keyboard::S))
+        else if (Keyboard::isKeyDown(sf::Keyboard::S))
         {
             move.y += 1;
         }
@@ -139,6 +145,8 @@ namespace town
                 if (map->canMoveTo(newPosition))
                 {
                     auto diff = newPosition - headPosition();
+                    auto prevPos = newPosition;
+                    auto inPortal = false;
                     if (map->hitApple(newPosition))
                     {
                         _length++;
@@ -146,13 +154,15 @@ namespace town
                     else
                     {
                         sf::Vector2i portalPosition;
-                        if (map->willHitPortal(newPosition, &portalPosition))
+                        auto &currentHead = headData();
+                        if (!currentHead.inPortal() && map->willHitPortal(currentHead.pos(), &portalPosition))
                         {
+                            inPortal = true;
                             newPosition = portalPosition;
                         }
                     }
 
-                    addNewPosition(newPosition, diff);
+                    addNewPosition(newPosition, diff, inPortal);
                 }
             }
         }
@@ -199,12 +209,15 @@ namespace town
         target.draw(*sprite);
     }
 
-    void Snake::addNewPosition(sf::Vector2i newPosition, sf::Vector2i diff)
+    void Snake::addNewPosition(sf::Vector2i newPosition, sf::Vector2i diff, bool inPortal)
     {
-        _positions.push_back(SnakePosition(newPosition, diff));
-        if (_positions.size() > _length)
+        _positions.push_back(SnakePosition::Basic(newPosition, diff, inPortal));
+        _currentLength++;
+
+        if (_currentLength > _length)
         {
             _positions.erase(_positions.begin());
+            _currentLength--;
         }
 
         {
