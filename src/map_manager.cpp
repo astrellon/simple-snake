@@ -61,6 +61,15 @@ namespace town
                 }
                 y++;
             }
+            else if (tokens[0] == "portal")
+            {
+                auto x1 = std::stoi(tokens[1]);
+                auto y1 = std::stoi(tokens[2]);
+                auto x2 = std::stoi(tokens[3]);
+                auto y2 = std::stoi(tokens[4]);
+
+                map.addPortal(sf::Vector2i(x1, y1), sf::Vector2i(x2, y2));
+            }
 
             return true;
         });

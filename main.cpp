@@ -48,8 +48,6 @@ int main()
         return 1;
     }
 
-    map1->addPortal(sf::Vector2i(6, 1), sf::Vector2i(6, 6));
-
     auto gameSession = engine.startGameSession();
     gameSession->currentMap(map1);
 
