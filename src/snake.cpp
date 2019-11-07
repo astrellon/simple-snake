@@ -154,8 +154,6 @@ namespace town
 
                     addNewPosition(newPosition, diff);
                 }
-
-                _altSpriteIndex = !_altSpriteIndex;
             }
         }
     }
@@ -224,7 +222,8 @@ namespace town
             }
 
             tailPos.rotation(rotation);
-            tailPos.tileIndex(1);
+            tailPos.tileIndex(1 + indexOffset(_altSpriteIndex));
+            _altSpriteIndex = !_altSpriteIndex;
         }
 
         for (auto i = 1; i < _positions.size() - 1; i++)
@@ -278,7 +277,8 @@ namespace town
             }
 
             pos.rotation(rotation);
-            pos.tileIndex(index);
+            pos.tileIndex(index + indexOffset(_altSpriteIndex));
+            _altSpriteIndex = !_altSpriteIndex;
         }
 
         {
@@ -297,7 +297,8 @@ namespace town
             }
 
             headPos.rotation(rotation);
-            headPos.tileIndex(3);
+            headPos.tileIndex(3 + indexOffset(_altSpriteIndex));
+            _altSpriteIndex = !_altSpriteIndex;
         }
     }
 
