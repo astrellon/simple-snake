@@ -8,7 +8,7 @@
             "name": "(gdb) Launch",
             "type": "cppdbg",
             "request": "launch",
-            "program": "${workspaceRoot}/debug/SFMLTest",
+            "program": "${workspaceRoot}/debug/Snake",
             "args": [],
             "stopAtEntry": false,
             "cwd": "${workspaceFolder}/debug",
