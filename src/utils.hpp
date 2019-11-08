@@ -5,6 +5,8 @@
 #include <vector>
 #include <random>
 
+#include <SFML/System.hpp>
+
 namespace town
 {
     class Utils
@@ -29,6 +31,31 @@ namespace town
                 auto floatValue = randf(static_cast<float>(min), static_cast<float>(max));
 
                 return static_cast<int>(floatValue);
+            }
+
+            static inline float lerp(float init, float target, float t)
+            {
+                return (target - init) * t + init;
+            }
+
+            static inline sf::Vector2f lerp(const sf::Vector2f &init, const sf::Vector2f &target, float t)
+            {
+                auto x = lerp(init.x, target.x, t);
+                auto y = lerp(init.y, target.y, t);
+                return sf::Vector2f(x, y);
+            }
+
+            static inline float para_lerp(float init, float target, float t)
+            {
+                auto x = (t - 1);
+                x = -x*x + 1;
+                return (target - init) * x + init;
+            }
+            static inline sf::Vector2f para_lerp(const sf::Vector2f &init, const sf::Vector2f &target, float t)
+            {
+                auto x = para_lerp(init.x, target.x, t);
+                auto y = para_lerp(init.y, target.y, t);
+                return sf::Vector2f(x, y);
             }
 
         private:

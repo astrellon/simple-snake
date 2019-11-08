@@ -4,6 +4,7 @@
 #include <iostream>
 #include <thread>
 #include <chrono>
+#include <vector>
 
 #include "src/engine.hpp"
 #include "src/font_manager.hpp"
@@ -11,6 +12,7 @@
 #include "src/tiles.hpp"
 #include "src/snake.hpp"
 #include "src/game_session.hpp"
+#include "src/particle_system.hpp"
 
 int main()
 {
@@ -40,6 +42,15 @@ int main()
     auto &portalTiles = engine.portalTiles();
     portalTiles.init(portalTexture, spriteSize, spriteScale);
 
+    auto portalSprite1 = portalTiles.getSprite(0);
+
+    town::ParticleSystem particles;
+    particles.wakeup(10);
+    particles.update(sf::seconds(0.01f));
+    auto particleSprite = particles.sprite();
+    particleSprite->setTexture(*portalTexture);
+    particleSprite->setTextureRect(portalSprite1->getTextureRect());
+
     auto &mapManager = engine.mapManager();
     auto map1 = mapManager.loadMap("data/testMap.csv");
     if (map1 == nullptr)
@@ -60,8 +71,11 @@ int main()
         engine.processEvents();
 
         engine.preUpdate();
+        particles.update(engine.deltaTime());
         engine.update();
         engine.draw();
+        particles.draw(&engine, window);
+        window.display();
     }
 
     return 0;

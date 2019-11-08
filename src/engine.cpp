@@ -178,6 +178,6 @@ namespace town
         {
             _currentSession->draw(_window);
         }
-        _window.display();
+        //_window.display();
     }
 }
