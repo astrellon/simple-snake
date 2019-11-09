@@ -182,25 +182,6 @@ namespace town
         auto scale = engine->spriteScale();
         auto combinedScale = engine->spriteScaleCombined();
 
-        // auto x = 0, y = 0;
-        // for (const auto tile : _data)
-        // {
-        //     auto *sprite = engine->mapTiles().getSprite(tile);
-        //     if (sprite == nullptr)
-        //     {
-        //         continue;
-        //     }
-
-        //     sprite->setPosition(combinedScale * x, combinedScale * y);
-        //     target.draw(*sprite);
-
-        //     x++;
-        //     if (x >= _width)
-        //     {
-        //         y++;
-        //         x = 0;
-        //     }
-        // }
         target.draw(_mapVerticies, _tileMap->texture());
 
         if (_apples.size() > 0)
