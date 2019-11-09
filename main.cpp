@@ -23,26 +23,26 @@ int main()
     engine.spriteScale(4.0f);
     engine.readDataPaths("data/data.csv");
 
-    auto &textureManager = engine.textureManager();
+    auto textureManager = engine.textureManager();
 
-    auto sansFont = engine.fontManager().font("sans");
-    auto tileTexture = textureManager.texture("mapTiles");
-    auto snakeTexture = textureManager.texture("snakeTiles");
-    auto portalTexture = textureManager.texture("portalTiles");
+    auto sansFont = engine.fontManager()->font("sans");
+    auto tileTexture = textureManager->texture("mapTiles");
+    auto snakeTexture = textureManager->texture("snakeTiles");
+    auto portalTexture = textureManager->texture("portalTiles");
 
     auto spriteSize = static_cast<uint>(engine.spriteSize());
     auto spriteScale = engine.spriteScale();
 
-    auto &mapTiles = engine.mapTiles();
-    mapTiles.init(tileTexture, spriteSize, spriteScale);
+    auto mapTiles = engine.mapTiles();
+    mapTiles->init(tileTexture, spriteSize, spriteScale);
 
-    auto &snakeTiles = engine.snakeTiles();
-    snakeTiles.init(snakeTexture, spriteSize, spriteScale);
+    auto snakeTiles = engine.snakeTiles();
+    snakeTiles->init(snakeTexture, spriteSize, spriteScale);
 
-    auto &portalTiles = engine.portalTiles();
-    portalTiles.init(portalTexture, spriteSize, spriteScale);
+    auto portalTiles = engine.portalTiles();
+    portalTiles->init(portalTexture, spriteSize, spriteScale);
 
-    auto portalSprite1 = portalTiles.getSprite(0);
+    auto portalSprite1 = portalTiles->getSprite(0);
 
     town::ParticleSystem particles;
     particles.wakeup(10);
@@ -51,14 +51,14 @@ int main()
     particleSprite->setTexture(*portalTexture);
     particleSprite->setTextureRect(portalSprite1->getTextureRect());
 
-    auto &mapManager = engine.mapManager();
-    auto map1 = mapManager.loadMap(&engine, "data/testMap.csv");
+    auto mapManager = engine.mapManager();
+    auto map1 = mapManager->loadMap("data/testMap.csv");
     if (map1 == nullptr)
     {
         std::cout << "Cannot play without a map!" << std::endl;
         return 1;
     }
-    map1->initTiles(&mapTiles);
+    map1->initTiles(mapTiles);
 
     auto gameSession = engine.startGameSession();
     gameSession->currentMap(map1);

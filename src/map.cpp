@@ -186,7 +186,7 @@ namespace town
 
         if (_apples.size() > 0)
         {
-            sf::Sprite appleSprite(*engine->textureManager().texture("apple"));
+            sf::Sprite appleSprite(*engine->textureManager()->texture("apple"));
             appleSprite.setScale(scale, scale);
             for (const auto &apple : _apples)
             {

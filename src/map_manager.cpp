@@ -7,7 +7,12 @@
 
 namespace town
 {
-    Map &MapManager::createMap(Engine *engine, const std::string &mapName, uint width, uint height)
+    MapManager::MapManager(Engine *engine) : _engine(engine)
+    {
+
+    }
+
+    Map &MapManager::createMap(const std::string &mapName, uint width, uint height)
     {
         const auto &find = _maps.find(mapName);
         if (find != _maps.end())
@@ -15,14 +20,14 @@ namespace town
             return *find->second.get();
         }
 
-        auto map = std::make_unique<Map>(engine, mapName, width, height);
+        auto map = std::make_unique<Map>(_engine, mapName, width, height);
         auto *mapPtr = map.get();
         _maps.emplace(mapName, std::move(map));
 
         return *mapPtr;
     }
 
-    Map *MapManager::loadMap(Engine *engine, const std::string &filename)
+    Map *MapManager::loadMap(const std::string &filename)
     {
         std::string mapName;
         int width, height;
@@ -48,7 +53,7 @@ namespace town
             return nullptr;
         }
 
-        auto &map = createMap(engine, mapName, width, height);
+        auto &map = createMap(mapName, width, height);
 
         Utils::readCSVLines(filename, [&y, &map] (const std::string &line) mutable
         {

@@ -20,12 +20,19 @@ namespace town
             Engine(sf::RenderWindow &window);
             ~Engine();
 
-            FontManager &fontManager() const;
-            TextureManager &textureManager() const;
-            MapManager &mapManager() const;
-            Tiles &mapTiles() const;
-            Tiles &snakeTiles() const;
-            Tiles &portalTiles() const;
+            const FontManager *fontManager() const;
+            const TextureManager *textureManager() const;
+            const MapManager *mapManager() const;
+            const Tiles *mapTiles() const;
+            const Tiles *snakeTiles() const;
+            const Tiles *portalTiles() const;
+
+            FontManager *fontManager();
+            TextureManager *textureManager();
+            MapManager *mapManager();
+            Tiles *mapTiles();
+            Tiles *snakeTiles();
+            Tiles *portalTiles();
 
             float spriteScale() const;
             void spriteScale(float scale);
@@ -53,12 +60,12 @@ namespace town
             void draw();
 
         private:
-            mutable FontManager _fontManager;
-            mutable TextureManager _textureManager;
-            mutable MapManager _mapManager;
-            mutable Tiles _mapTiles;
-            mutable Tiles _snakeTiles;
-            mutable Tiles _portalTiles;
+            std::unique_ptr<FontManager> _fontManager;
+            std::unique_ptr<TextureManager> _textureManager;
+            std::unique_ptr<MapManager> _mapManager;
+            std::unique_ptr<Tiles> _mapTiles;
+            std::unique_ptr<Tiles> _snakeTiles;
+            std::unique_ptr<Tiles> _portalTiles;
 
             float _spriteScale;
             float _spriteSize;

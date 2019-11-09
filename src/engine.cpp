@@ -13,39 +13,72 @@ namespace town
     Engine::Engine(sf::RenderWindow &window) :
         _spriteScale(1.0f), _spriteSize(16.0f), _window(window), _deltaTime(sf::Time::Zero)
     {
-
+        _fontManager = std::make_unique<FontManager>();
+        _textureManager = std::make_unique<TextureManager>();
+        _mapManager = std::make_unique<MapManager>(this);
+        _mapTiles = std::make_unique<Tiles>();
+        _snakeTiles = std::make_unique<Tiles>();
+        _portalTiles = std::make_unique<Tiles>();
     }
     Engine::~Engine()
     {
 
     }
 
-    FontManager &Engine::fontManager() const
+    const FontManager *Engine::fontManager() const
     {
-        return _fontManager;
+        return _fontManager.get();
     }
 
-    TextureManager &Engine::textureManager() const
+    const TextureManager *Engine::textureManager() const
     {
-        return _textureManager;
+        return _textureManager.get();
     }
 
-    MapManager &Engine::mapManager() const
+    const MapManager *Engine::mapManager() const
     {
-        return _mapManager;
+        return _mapManager.get();
     }
 
-    Tiles &Engine::mapTiles() const
+    const Tiles *Engine::mapTiles() const
     {
-        return _mapTiles;
+        return _mapTiles.get();
     }
-    Tiles &Engine::snakeTiles() const
+    const Tiles *Engine::snakeTiles() const
     {
-        return _snakeTiles;
+        return _snakeTiles.get();
     }
-    Tiles &Engine::portalTiles() const
+    const Tiles *Engine::portalTiles() const
     {
-        return _portalTiles;
+        return _portalTiles.get();
+    }
+
+    FontManager *Engine::fontManager()
+    {
+        return _fontManager.get();
+    }
+
+    TextureManager *Engine::textureManager()
+    {
+        return _textureManager.get();
+    }
+
+    MapManager *Engine::mapManager()
+    {
+        return _mapManager.get();
+    }
+
+    Tiles *Engine::mapTiles()
+    {
+        return _mapTiles.get();
+    }
+    Tiles *Engine::snakeTiles()
+    {
+        return _snakeTiles.get();
+    }
+    Tiles *Engine::portalTiles()
+    {
+        return _portalTiles.get();
     }
 
     float Engine::spriteScale() const
@@ -93,11 +126,11 @@ namespace town
             auto tokens = Utils::split(line, ',', true);
             if (tokens[0] == "font")
             {
-                _fontManager.load_font(tokens[1], "data/" + tokens[2]);
+                _fontManager->load_font(tokens[1], "data/" + tokens[2]);
             }
             else if (tokens[0] == "texture")
             {
-                _textureManager.loadTexture(tokens[1], "data/" + tokens[2]);
+                _textureManager->loadTexture(tokens[1], "data/" + tokens[2]);
             }
             else
             {

@@ -53,7 +53,7 @@ namespace town
 
         const sf::Vector2f halfSize(size * 0.5f, size * 0.5f);
 
-        auto sprite = engine->portalTiles().getSprite(index);
+        auto sprite = engine->portalTiles()->getSprite(index);
         sprite->setOrigin(halfSize);
 
         auto pos = (sf::Vector2f(position) * combinedScale) + (halfSize * scale);

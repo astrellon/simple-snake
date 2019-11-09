@@ -199,7 +199,7 @@ namespace town
 
         const sf::Vector2f halfSize(size * 0.5f, size * 0.5f);
 
-        auto sprite = engine->snakeTiles().getSprite(index);
+        auto sprite = engine->snakeTiles()->getSprite(index);
         sprite->setOrigin(halfSize);
 
         auto pos = (sf::Vector2f(position) * combinedScale) + (halfSize * scale);
