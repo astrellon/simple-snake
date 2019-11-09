@@ -8,11 +8,13 @@
 
 namespace town
 {
+    class Engine;
+
     class MapManager : private NonCopyable
     {
         public:
-            Map &createMap(const std::string &mapName, uint width, uint height);
-            Map *loadMap(const std::string &filename);
+            Map &createMap(Engine *engine, const std::string &mapName, uint width, uint height);
+            Map *loadMap(Engine *engine, const std::string &filename);
 
             typedef std::map<std::string, std::unique_ptr<Map>> MapMap;
 

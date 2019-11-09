@@ -52,12 +52,13 @@ int main()
     particleSprite->setTextureRect(portalSprite1->getTextureRect());
 
     auto &mapManager = engine.mapManager();
-    auto map1 = mapManager.loadMap("data/testMap.csv");
+    auto map1 = mapManager.loadMap(&engine, "data/testMap.csv");
     if (map1 == nullptr)
     {
         std::cout << "Cannot play without a map!" << std::endl;
         return 1;
     }
+    map1->initTiles(&mapTiles);
 
     auto gameSession = engine.startGameSession();
     gameSession->currentMap(map1);

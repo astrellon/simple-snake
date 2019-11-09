@@ -6,13 +6,18 @@ namespace town
 {
     void Tiles::init(const sf::Texture *texture, uint spriteSize, float spriteScale)
     {
-        auto size = texture->getSize();
-        auto rows = size.y / spriteSize;
-        auto columns = size.x / spriteSize;
+        _texture = texture;
 
-        for (auto y = 0; y < columns; y++)
+        auto size = texture->getSize();
+        _rows = size.y / spriteSize;
+        _columns = size.x / spriteSize;
+
+        _spriteSize = spriteSize;
+        _spriteScale = spriteScale;
+
+        for (auto y = 0; y < _columns; y++)
         {
-            for (auto x = 0; x < rows; x++)
+            for (auto x = 0; x < _rows; x++)
             {
                 auto rect = sf::IntRect(x * spriteSize, y * spriteSize, spriteSize, spriteSize);
 
@@ -32,5 +37,28 @@ namespace town
         }
 
         return _sprites[index].get();
+    }
+
+    sf::Vector2f Tiles::getSpritePosition(uint index) const
+    {
+        if (_sprites.size() <= index)
+        {
+            return sf::Vector2f(0, 0);
+        }
+
+        auto x = index % _columns;
+        auto y = index / _rows;
+
+        return sf::Vector2f(x * _spriteSize, y * _spriteSize);
+    }
+
+    sf::Vector2f Tiles::getSpritePosition(uint x, uint y) const
+    {
+        return sf::Vector2f(x * _spriteSize, y * _spriteSize);
+    }
+
+    const sf::Texture *Tiles::texture() const
+    {
+        return _texture;
     }
 }

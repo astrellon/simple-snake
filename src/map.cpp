@@ -11,14 +11,16 @@
 
 namespace town
 {
-    Map::Map(const std::string &mapName, uint width, uint height) :
-        _mapName(mapName), _width(width), _height(height)
+    Map::Map(Engine *engine, const std::string &mapName, uint width, uint height) :
+        _mapName(mapName), _width(width), _height(height), _tileMap(nullptr), _engine(engine)
     {
         _data.resize(width * height);
         for (auto i = 0; i < width * height; i++)
         {
             _data[i] = 0;
         }
+
+        _mapVerticies.setPrimitiveType(sf::Triangles);
     }
 
     Map::~Map()
@@ -29,11 +31,6 @@ namespace town
     const std::string &Map::mapName() const
     {
         return _mapName;
-    }
-
-    Map::MapData &Map::mapData()
-    {
-        return _data;
     }
 
     const Map::MapData &Map::mapData() const
@@ -154,6 +151,18 @@ namespace town
         return false;
     }
 
+    void Map::initTiles(Tiles *tiles)
+    {
+        _tileMap = tiles;
+
+        if (tiles == nullptr)
+        {
+            return;
+        }
+
+        redrawMap();
+    }
+
     void Map::update(Engine *engine, sf::Time dt)
     {
         auto &player = engine->currentSession()->player();
@@ -173,25 +182,26 @@ namespace town
         auto scale = engine->spriteScale();
         auto combinedScale = engine->spriteScaleCombined();
 
-        auto x = 0, y = 0;
-        for (const auto tile : _data)
-        {
-            auto *sprite = engine->mapTiles().getSprite(tile);
-            if (sprite == nullptr)
-            {
-                continue;
-            }
+        // auto x = 0, y = 0;
+        // for (const auto tile : _data)
+        // {
+        //     auto *sprite = engine->mapTiles().getSprite(tile);
+        //     if (sprite == nullptr)
+        //     {
+        //         continue;
+        //     }
 
-            sprite->setPosition(combinedScale * x, combinedScale * y);
-            target.draw(*sprite);
+        //     sprite->setPosition(combinedScale * x, combinedScale * y);
+        //     target.draw(*sprite);
 
-            x++;
-            if (x >= _width)
-            {
-                y++;
-                x = 0;
-            }
-        }
+        //     x++;
+        //     if (x >= _width)
+        //     {
+        //         y++;
+        //         x = 0;
+        //     }
+        // }
+        target.draw(_mapVerticies, _tileMap->texture());
 
         if (_apples.size() > 0)
         {
@@ -208,6 +218,52 @@ namespace town
         for (const auto &portal : _portals)
         {
             portal->draw(engine, target);
+        }
+    }
+
+    void Map::redrawMap()
+    {
+        _mapVerticies.clear();
+        if (_tileMap == nullptr)
+        {
+            return;
+        }
+
+        auto vertexCount = 3 * 2 * _width * _height;
+        _mapVerticies.resize(vertexCount);
+
+        auto scale = _engine->spriteScale();
+        auto mul = _engine->spriteScaleCombined();
+        auto size = _engine->spriteSize();
+
+        auto x = 0, y = 0, v = 0;
+        for (const auto tile : _data)
+        {
+            auto spritePosition = _tileMap->getSpritePosition(tile);
+
+            _mapVerticies[v].position = sf::Vector2f(x * mul, y * mul);
+            _mapVerticies[v].texCoords = spritePosition;
+            _mapVerticies[v + 1].position = sf::Vector2f((x + 1) * mul, y * mul);
+            _mapVerticies[v + 1].texCoords = sf::Vector2f(spritePosition.x + size, spritePosition.y);
+            _mapVerticies[v + 2].position = sf::Vector2f(x * mul, (y + 1) * mul);
+            _mapVerticies[v + 2].texCoords = sf::Vector2f(spritePosition.x, spritePosition.y + size);
+
+
+
+            _mapVerticies[v + 3] = _mapVerticies[v + 1];
+
+            _mapVerticies[v + 4].position = sf::Vector2f((x + 1) * mul, (y + 1) * mul);
+            _mapVerticies[v + 4].texCoords = sf::Vector2f(spritePosition.x + size, spritePosition.y + size);
+
+            _mapVerticies[v + 5] = _mapVerticies[v + 2];
+
+            v += 6;
+            x++;
+            if (x >= _width)
+            {
+                y++;
+                x = 0;
+            }
         }
     }
 }
