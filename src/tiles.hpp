@@ -18,6 +18,10 @@ namespace town
             sf::Vector2f getSpritePosition(uint x, uint y) const;
             const sf::Texture *texture() const;
 
+            float combinedSpriteSize() const;
+            uint spriteSize() const;
+            float spriteScale() const;
+
             typedef std::vector<std::unique_ptr<sf::Sprite>> SpriteList;
 
         private:

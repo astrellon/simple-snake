@@ -61,4 +61,17 @@ namespace town
     {
         return _texture;
     }
+
+    float Tiles::combinedSpriteSize() const
+    {
+        return _spriteSize * _spriteScale;
+    }
+    uint Tiles::spriteSize() const
+    {
+        return _spriteSize;
+    }
+    float Tiles::spriteScale() const
+    {
+        return _spriteScale;
+    }
 }

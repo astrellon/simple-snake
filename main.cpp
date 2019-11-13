@@ -44,12 +44,7 @@ int main()
 
     auto portalSprite1 = portalTiles->getSprite(0);
 
-    town::ParticleSystem particles;
-    particles.wakeup(10);
-    particles.update(sf::seconds(0.01f));
-    auto particleSprite = particles.sprite();
-    particleSprite->setTexture(*portalTexture);
-    particleSprite->setTextureRect(portalSprite1->getTextureRect());
+    town::ParticleSystem particles(10, portalTiles);
 
     auto mapManager = engine.mapManager();
     auto map1 = mapManager->loadMap("data/testMap.csv");

@@ -7,36 +7,32 @@
 
 namespace town
 {
-    ParticleSystem::ParticleSystem() :
-        _numAwake(0), _maxNumberOfParticles(0)
+    ParticleSystem::ParticleSystem(std::size_t numParticles, Tiles *tiles) : _tiles(tiles)
     {
+        _positions.resize(numParticles);
+        _velocity.resize(numParticles);
+        _ages.resize(numParticles);
 
+        _vertexArray.resize(numParticles * 6);
+        _vertexArray.setPrimitiveType(sf::Triangles);
+
+        for (auto i = 0; i < numParticles; i++)
+        {
+            restart(i);
+        }
     }
 
-    std::size_t ParticleSystem::numAwake() const
+    std::size_t ParticleSystem::numParticles() const
     {
-        return _numAwake;
-    }
-
-    std::size_t ParticleSystem::maxNumberOfParticles() const
-    {
-        return _maxNumberOfParticles;
-    }
-    void ParticleSystem::maxNumberOfParticles(std::size_t number)
-    {
-        _maxNumberOfParticles = number;
-    }
-
-    sf::Sprite *ParticleSystem::sprite()
-    {
-        return &_sprite;
+        return _positions.size();
     }
 
     void ParticleSystem::update(sf::Time dt)
     {
         auto maxTime = sf::seconds(3.0f);
+        auto num = numParticles();
 
-        for (auto i = 0; i < _numAwake; i++)
+        for (auto i = 0; i < num; i++)
         {
             _ages[i] += dt;
             if (_ages[i] > maxTime)
@@ -45,76 +41,50 @@ namespace town
             }
         }
 
+        auto screenSpriteSize = _tiles->combinedSpriteSize();
+        auto half = screenSpriteSize * 0.5f;
+        sf::Vector2f topLeft(-half, -half);
+        sf::Vector2f topRight(half, -half);
+        sf::Vector2f bottomLeft(-half, half);
+        sf::Vector2f bottomRight(half, half);
+
+        auto spriteSize = _tiles->spriteSize();
+        sf::Vector2f texTopRight(spriteSize, 0);
+        sf::Vector2f texBottomLeft(0, spriteSize);
+        sf::Vector2f texBottomRight(spriteSize, spriteSize);
         auto seconds = dt.asSeconds();
-        for (auto i = 0; i < _numAwake; i++)
+
+        for (auto i = 0, vi = 0; i < num; i++, vi += 6)
         {
-            _positions[i] += _velocity[i] * seconds;
+            auto pos = (_positions[i] += _velocity[i] * seconds);
+            auto texPos = sf::Vector2f(0, 0);
+            _vertexArray[vi    ].position = pos + topLeft;
+            _vertexArray[vi    ].texCoords = texPos;
+            _vertexArray[vi + 1].position = pos + topRight;
+            _vertexArray[vi + 1].texCoords = texPos + texTopRight;
+            _vertexArray[vi + 2].position = pos + bottomLeft;
+            _vertexArray[vi + 2].texCoords = texPos + texBottomLeft;
+
+            _vertexArray[vi + 3].position = pos + topRight;
+            _vertexArray[vi + 3].texCoords = texPos + texTopRight;
+            _vertexArray[vi + 4].position = pos + bottomRight;
+            _vertexArray[vi + 4].texCoords = texPos + texBottomRight;
+            _vertexArray[vi + 5].position = pos + bottomLeft;
+            _vertexArray[vi + 5].texCoords = texPos + texBottomLeft;
         }
     }
 
     void ParticleSystem::draw(Engine *engine, sf::RenderTarget &target)
     {
-        auto scale = engine->spriteScale();
-        _sprite.setScale(scale, scale);
-
-        for (auto i = 0; i < _numAwake; i++)
-        {
-            _sprite.setPosition(_positions[i] * scale);
-            target.draw(_sprite);
-        }
-    }
-
-    void ParticleSystem::swap(std::size_t index1, std::size_t index2)
-    {
-        std::swap(_positions[index1], _positions[index2]);
-        std::swap(_velocity[index1], _velocity[index2]);
-        std::swap(_ages[index1], _ages[index2]);
-    }
-
-    void ParticleSystem::wakeup(std::size_t number)
-    {
-        auto prevNumAwake = _numAwake;
-        _numAwake += number;
-        if (_numAwake > _maxNumberOfParticles)
-        {
-            _maxNumberOfParticles = _numAwake;
-
-            _positions.resize(_numAwake);
-            _velocity.resize(_numAwake);
-            _ages.resize(_numAwake);
-
-            for (auto index = prevNumAwake; index < _numAwake; ++index)
-            {
-                restart(index);
-            }
-        }
-    }
-
-    void ParticleSystem::kill(std::size_t index)
-    {
-        if (index >= _numAwake)
-        {
-            std::cout << "Out of bounds" << std::endl;
-            return;
-        }
-
-        if (_numAwake - 1 == index)
-        {
-            _numAwake--;
-        }
-        else
-        {
-            swap(index, _numAwake);
-            _numAwake--;
-        }
+        target.draw(_vertexArray, _tiles->texture());
     }
 
     void ParticleSystem::restart(std::size_t index)
     {
         _positions[index] = sf::Vector2f(50, 50);
 
-        auto dx = Utils::randf(-10.0f, 10.0f);
-        auto dy = Utils::randf(-10.0f, 10.0f);
+        auto dx = Utils::randf(-50.0f, 50.0f);
+        auto dy = Utils::randf(-50.0f, 50.0f);
         _velocity[index] = sf::Vector2f(dx, dy);
         _ages[index] = sf::microseconds(0);
     }

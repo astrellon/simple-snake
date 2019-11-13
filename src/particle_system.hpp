@@ -8,6 +8,7 @@
 namespace town
 {
     class Engine;
+    class Tiles;
 
     class ParticleSystem
     {
@@ -16,17 +17,9 @@ namespace town
             typedef std::vector<sf::Time> Times;
             typedef std::vector<bool> Booleans;
 
-            ParticleSystem();
+            ParticleSystem(std::size_t numParticles, Tiles *tiles);
 
-            std::size_t numAwake() const;
-
-            std::size_t maxNumberOfParticles() const;
-            void maxNumberOfParticles(std::size_t number);
-
-            //void texture(sf::Texture &texture);
-            sf::Sprite *sprite();
-
-            void wakeup(std::size_t number);
+            std::size_t numParticles() const;
 
             void update(sf::Time dt);
             void draw(Engine *engine, sf::RenderTarget &target);
@@ -35,13 +28,10 @@ namespace town
             Vectors _positions;
             Vectors _velocity;
             Times _ages;
-            sf::Sprite _sprite;
 
-            std::size_t _numAwake;
-            std::size_t _maxNumberOfParticles;
+            Tiles *_tiles;
+            sf::VertexArray _vertexArray;
 
-            void swap(std::size_t index1, std::size_t index2);
-            void kill(std::size_t index);
             void restart(std::size_t index);
     };
 } // town
