@@ -16,6 +16,7 @@ namespace town
         _fontManager = std::make_unique<FontManager>();
         _textureManager = std::make_unique<TextureManager>();
         _mapManager = std::make_unique<MapManager>(this);
+        _particleManager = std::make_unique<ParticleManager>();
         _mapTiles = std::make_unique<Tiles>();
         _snakeTiles = std::make_unique<Tiles>();
         _portalTiles = std::make_unique<Tiles>();
@@ -38,6 +39,11 @@ namespace town
     const MapManager *Engine::mapManager() const
     {
         return _mapManager.get();
+    }
+
+    const ParticleManager *Engine::particleManager() const
+    {
+        return _particleManager.get();
     }
 
     const Tiles *Engine::mapTiles() const
@@ -66,6 +72,11 @@ namespace town
     MapManager *Engine::mapManager()
     {
         return _mapManager.get();
+    }
+
+    ParticleManager *Engine::particleManager()
+    {
+        return _particleManager.get();
     }
 
     Tiles *Engine::mapTiles()
@@ -202,6 +213,7 @@ namespace town
         {
             _currentSession->update(_deltaTime);
         }
+        _particleManager->update(_deltaTime);
     }
 
     void Engine::draw()
@@ -211,6 +223,7 @@ namespace town
         {
             _currentSession->draw(_window);
         }
-        //_window.display();
+        _particleManager->draw(this, _window);
+        _window.display();
     }
 }

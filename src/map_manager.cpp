@@ -21,7 +21,7 @@ namespace town
         }
 
         auto map = std::make_unique<Map>(_engine, mapName, width, height);
-        auto *mapPtr = map.get();
+        auto mapPtr = map.get();
         _maps.emplace(mapName, std::move(map));
 
         return *mapPtr;

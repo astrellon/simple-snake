@@ -4,6 +4,7 @@
 #include "font_manager.hpp"
 #include "texture_manager.hpp"
 #include "map_manager.hpp"
+#include "particle_manager.hpp"
 #include "tiles.hpp"
 #include "snake.hpp"
 
@@ -23,6 +24,7 @@ namespace town
             const FontManager *fontManager() const;
             const TextureManager *textureManager() const;
             const MapManager *mapManager() const;
+            const ParticleManager *particleManager() const;
             const Tiles *mapTiles() const;
             const Tiles *snakeTiles() const;
             const Tiles *portalTiles() const;
@@ -30,6 +32,7 @@ namespace town
             FontManager *fontManager();
             TextureManager *textureManager();
             MapManager *mapManager();
+            ParticleManager *particleManager();
             Tiles *mapTiles();
             Tiles *snakeTiles();
             Tiles *portalTiles();
@@ -63,6 +66,7 @@ namespace town
             std::unique_ptr<FontManager> _fontManager;
             std::unique_ptr<TextureManager> _textureManager;
             std::unique_ptr<MapManager> _mapManager;
+            std::unique_ptr<ParticleManager> _particleManager;
             std::unique_ptr<Tiles> _mapTiles;
             std::unique_ptr<Tiles> _snakeTiles;
             std::unique_ptr<Tiles> _portalTiles;

@@ -44,7 +44,8 @@ int main()
 
     auto portalSprite1 = portalTiles->getSprite(0);
 
-    town::ParticleSystem particles(10, portalTiles);
+    //town::ParticleSystem particles(10, portalTiles);
+    engine.particleManager()->createSystem(10, portalTiles);
 
     auto mapManager = engine.mapManager();
     auto map1 = mapManager->loadMap("data/testMap.csv");
@@ -67,11 +68,8 @@ int main()
         engine.processEvents();
 
         engine.preUpdate();
-        particles.update(engine.deltaTime());
         engine.update();
         engine.draw();
-        particles.draw(&engine, window);
-        window.display();
     }
 
     return 0;
