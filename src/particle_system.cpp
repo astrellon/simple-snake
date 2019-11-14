@@ -7,7 +7,7 @@
 
 namespace town
 {
-    ParticleSystem::ParticleSystem(std::size_t numParticles, Tiles *tiles) : _tiles(tiles)
+    ParticleSystem::ParticleSystem(std::size_t numParticles, Tiles *tiles) : _tiles(tiles), _loops(true), _lifeTime(sf::seconds(3.0f))
     {
         _positions.resize(numParticles);
         _velocity.resize(numParticles);
@@ -15,8 +15,12 @@ namespace town
 
         _vertexArray.resize(numParticles * 6);
         _vertexArray.setPrimitiveType(sf::Triangles);
+    }
 
-        for (auto i = 0; i < numParticles; i++)
+    void ParticleSystem::initParticles()
+    {
+        auto num = numParticles();
+        for (auto i = 0; i < num; i++)
         {
             restart(i);
         }
@@ -27,15 +31,32 @@ namespace town
         return _positions.size();
     }
 
+    bool ParticleSystem::loops() const
+    {
+        return _loops;
+    }
+    void ParticleSystem::loops(bool value)
+    {
+        _loops = value;
+    }
+
+    sf::Time ParticleSystem::lifeTime() const
+    {
+        return _lifeTime;
+    }
+    void ParticleSystem::lifeTime(sf::Time value)
+    {
+        _lifeTime = value;
+    }
+
     void ParticleSystem::update(sf::Time dt)
     {
-        auto maxTime = sf::seconds(3.0f);
         auto num = numParticles();
 
         for (auto i = 0; i < num; i++)
         {
             _ages[i] += dt;
-            if (_ages[i] > maxTime)
+            if (_ages[i] > _lifeTime && _loops)
             {
                 restart(i);
             }
@@ -57,6 +78,21 @@ namespace town
         for (auto i = 0, vi = 0; i < num; i++, vi += 6)
         {
             auto pos = (_positions[i] += _velocity[i] * seconds);
+            if (!_loops)
+            {
+                auto age = _ages[i];
+                if (age > _lifeTime)
+                {
+                    for (auto j = 0; j < 6; j++)
+                    {
+                        _vertexArray[vi + j].position = sf::Vector2f(0, 0);
+                        _vertexArray[vi + j].texCoords = sf::Vector2f(0, 0);
+                    }
+
+                    continue;
+                }
+            }
+
             auto texPos = sf::Vector2f(0, 0);
             _vertexArray[vi    ].position = pos + topLeft;
             _vertexArray[vi    ].texCoords = texPos;

@@ -44,8 +44,8 @@ int main()
 
     auto portalSprite1 = portalTiles->getSprite(0);
 
-    //town::ParticleSystem particles(10, portalTiles);
-    engine.particleManager()->createSystem(10, portalTiles);
+    auto particles = engine.particleManager()->createSystem(10, portalTiles);
+    particles->loops(false);
 
     auto mapManager = engine.mapManager();
     auto map1 = mapManager->loadMap("data/testMap.csv");

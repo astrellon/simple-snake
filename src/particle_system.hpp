@@ -19,7 +19,15 @@ namespace town
 
             ParticleSystem(std::size_t numParticles, Tiles *tiles);
 
+            void initParticles();
+
             std::size_t numParticles() const;
+
+            bool loops() const;
+            void loops(bool value);
+
+            sf::Time lifeTime() const;
+            void lifeTime(sf::Time value);
 
             void update(sf::Time dt);
             void draw(Engine *engine, sf::RenderTarget &target);
@@ -28,6 +36,8 @@ namespace town
             Vectors _positions;
             Vectors _velocity;
             Times _ages;
+            bool _loops;
+            sf::Time _lifeTime;
 
             Tiles *_tiles;
             sf::VertexArray _vertexArray;
