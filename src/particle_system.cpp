@@ -7,7 +7,7 @@
 
 namespace town
 {
-    ParticleSystem::ParticleSystem(std::size_t numParticles, Tiles *tiles) : _tiles(tiles), _loops(true), _lifeTime(sf::seconds(3.0f))
+    ParticleSystem::ParticleSystem(std::size_t numParticles, Tiles *tiles) : _tiles(tiles)
     {
         _positions.resize(numParticles);
         _velocity.resize(numParticles);
@@ -31,22 +31,17 @@ namespace town
         return _positions.size();
     }
 
-    bool ParticleSystem::loops() const
+    ParticleData &ParticleSystem::data()
     {
-        return _loops;
+        return _data;
     }
-    void ParticleSystem::loops(bool value)
+    const ParticleData &ParticleSystem::data() const
     {
-        _loops = value;
+        return _data;
     }
-
-    sf::Time ParticleSystem::lifeTime() const
+    void ParticleSystem::data(const ParticleData &data)
     {
-        return _lifeTime;
-    }
-    void ParticleSystem::lifeTime(sf::Time value)
-    {
-        _lifeTime = value;
+        _data = data;
     }
 
     void ParticleSystem::update(sf::Time dt)
@@ -56,7 +51,7 @@ namespace town
         for (auto i = 0; i < num; i++)
         {
             _ages[i] += dt;
-            if (_ages[i] > _lifeTime && _loops)
+            if (_ages[i] > _data.lifeTime && _data.loops)
             {
                 restart(i);
             }
@@ -78,10 +73,10 @@ namespace town
         for (auto i = 0, vi = 0; i < num; i++, vi += 6)
         {
             auto pos = (_positions[i] += _velocity[i] * seconds);
-            if (!_loops)
+            if (!_data.loops)
             {
                 auto age = _ages[i];
-                if (age > _lifeTime)
+                if (age > _data.lifeTime)
                 {
                     for (auto j = 0; j < 6; j++)
                     {

@@ -5,6 +5,8 @@
 #include <SFML/Graphics.hpp>
 #include <SFML/System.hpp>
 
+#include "particle_data.hpp"
+
 namespace town
 {
     class Engine;
@@ -23,11 +25,9 @@ namespace town
 
             std::size_t numParticles() const;
 
-            bool loops() const;
-            void loops(bool value);
-
-            sf::Time lifeTime() const;
-            void lifeTime(sf::Time value);
+            ParticleData &data();
+            const ParticleData &data() const;
+            void data(const ParticleData &data);
 
             void update(sf::Time dt);
             void draw(Engine *engine, sf::RenderTarget &target);
@@ -36,13 +36,14 @@ namespace town
             Vectors _positions;
             Vectors _velocity;
             Times _ages;
-            bool _loops;
-            sf::Time _lifeTime;
+
+            ParticleData _data;
 
             Tiles *_tiles;
             sf::VertexArray _vertexArray;
 
             void restart(std::size_t index);
     };
+
 } // town
 
