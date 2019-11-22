@@ -24,6 +24,7 @@ namespace town
             void initParticles();
 
             std::size_t numParticles() const;
+            bool hasEnded() const;
 
             ParticleData &data();
             const ParticleData &data() const;
@@ -31,8 +32,6 @@ namespace town
 
             void update(sf::Time dt);
             void draw(Engine *engine, sf::RenderTarget &target);
-
-            bool hasEnded() const;
 
         private:
             Vectors _positions;

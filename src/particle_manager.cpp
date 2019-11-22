@@ -1,5 +1,7 @@
 #include "particle_manager.hpp"
 
+#include <iostream>
+
 #include "particle_system.hpp"
 
 namespace town
@@ -17,6 +19,15 @@ namespace town
         for (auto &iter : _particles)
         {
             iter->update(dt);
+        }
+
+        for (auto i = 0; i < _particles.size(); i++)
+        {
+            if (_particles[i]->hasEnded())
+            {
+                _particles.erase(_particles.begin() + i);
+                i--;
+            }
         }
     }
 

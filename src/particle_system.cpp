@@ -31,6 +31,11 @@ namespace town
         return _positions.size();
     }
 
+    bool ParticleSystem::hasEnded() const
+    {
+        return _hasEnded;
+    }
+
     ParticleData &ParticleSystem::data()
     {
         return _data;
