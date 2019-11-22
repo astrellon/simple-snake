@@ -6,6 +6,11 @@
 
 namespace town
 {
+    Range::Range(float min, float max) : min(min), max(max)
+    {
+
+    }
+
     int Range::randomInt(int min, int max)
     {
         auto diff = (float)(max - min);
@@ -13,13 +18,13 @@ namespace town
         return round(value) - min;
     }
 
-    LinearRange::LinearRange(float min, float max) : _min(min), _max(max)
+    float Range::randomValue()
     {
-
+        return Utils::randf(min, max);
     }
 
-    float LinearRange::randomValue()
+    Range Range::Linear(float min, float max)
     {
-        return Utils::randf(_min, _max);
+        return Range(min, max);
     }
 } // namespace town

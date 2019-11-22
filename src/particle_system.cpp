@@ -114,8 +114,8 @@ namespace town
     {
         _positions[index] = sf::Vector2f(50, 50);
 
-        auto angle = _data.emissionAngles()->randomValue();
-        auto speed = _data.emissionSpeeds()->randomValue();
+        auto angle = _data.emissionAngles.randomValue();
+        auto speed = _data.emissionSpeeds.randomValue();
         auto dx = cos(angle) * speed;
         auto dy = sin(angle) * speed;
         _velocity[index] = sf::Vector2f(dx, dy);

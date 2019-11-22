@@ -5,19 +5,15 @@ namespace town
     class Range
     {
         public:
-            virtual float randomValue() = 0;
+            Range(float min, float max);
+
+            float randomValue();
             int randomInt(int min, int max);
+
+            float min;
+            float max;
+
+            static Range Linear(float min, float max);
     };
 
-    class LinearRange : public Range
-    {
-        public:
-            LinearRange(float min, float max);
-
-            virtual float randomValue();
-
-        private:
-            float _min;
-            float _max;
-    };
 } // town

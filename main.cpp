@@ -46,6 +46,7 @@ int main()
 
     auto particles = engine.particleManager()->createSystem(10, portalTiles);
     particles->data().loops = false;
+    particles->data().emissionSpeeds.max = 100;
     particles->initParticles();
 
     auto mapManager = engine.mapManager();
