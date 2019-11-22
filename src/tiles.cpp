@@ -84,4 +84,9 @@ namespace town
     {
         return _spriteScale;
     }
+
+    std::size_t Tiles::numSprites() const
+    {
+        return _sprites.size();
+    }
 }

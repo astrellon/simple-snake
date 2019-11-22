@@ -24,6 +24,8 @@ namespace town
             uint spriteSize() const;
             float spriteScale() const;
 
+            std::size_t numSprites() const;
+
             typedef std::vector<std::unique_ptr<sf::Sprite>> SpriteList;
 
         private:

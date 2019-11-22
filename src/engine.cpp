@@ -16,7 +16,7 @@ namespace town
         _fontManager = std::make_unique<FontManager>();
         _textureManager = std::make_unique<TextureManager>();
         _mapManager = std::make_unique<MapManager>(this);
-        _particleManager = std::make_unique<ParticleManager>();
+        _particleManager = std::make_unique<ParticleManager>(this);
         _tilesManager = std::make_unique<TilesManager>(this);
     }
     Engine::~Engine()
@@ -127,7 +127,12 @@ namespace town
             }
             else if (tokens[0] == "tiles")
             {
-                _tilesManager->create(tokens[1], tokens[2]);
+                uint spriteSize = 0;
+                if (tokens.size() >= 4)
+                {
+                    spriteSize = (uint)std::stoi(tokens[3]);
+                }
+                _tilesManager->create(tokens[1], tokens[2], spriteSize);
             }
             else
             {
@@ -209,7 +214,7 @@ namespace town
         {
             _currentSession->draw(_window);
         }
-        _particleManager->draw(this, _window);
+        _particleManager->draw(_window);
         _window.display();
     }
 }

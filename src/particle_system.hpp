@@ -18,6 +18,7 @@ namespace town
             typedef std::vector<sf::Vector2f> Vectors;
             typedef std::vector<float> Times;
             typedef std::vector<bool> Booleans;
+            typedef std::vector<std::size_t> TileIndicies;
 
             ParticleSystem(std::size_t numParticles, const Tiles *tiles);
 
@@ -26,6 +27,10 @@ namespace town
             std::size_t numParticles() const;
             const Tiles *tiles() const;
             bool hasEnded() const;
+
+            sf::Vector2f &emissionPosition();
+            const sf::Vector2f &emissionPosition() const;
+            void emissionPosition(const sf::Vector2f &position);
 
             ParticleData &data();
             const ParticleData &data() const;
@@ -37,8 +42,10 @@ namespace town
             void draw(Engine *engine, sf::RenderTarget &target);
 
         private:
+            sf::Vector2f _emissionPosition;
             Vectors _positions;
             Vectors _velocity;
+            TileIndicies _tileIndicies;
             Times _lifeLeft;
 
             ParticleData _data;

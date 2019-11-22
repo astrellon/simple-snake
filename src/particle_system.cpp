@@ -7,11 +7,12 @@
 
 namespace town
 {
-    ParticleSystem::ParticleSystem(std::size_t numParticles, const Tiles *tiles) : _tiles(tiles), _hasEnded(false)
+    ParticleSystem::ParticleSystem(std::size_t numParticles, const Tiles *tiles) : _tiles(tiles), _hasEnded(false), _emissionPosition(0, 0)
     {
         _positions.resize(numParticles);
         _velocity.resize(numParticles);
         _lifeLeft.resize(numParticles);
+        _tileIndicies.resize(numParticles);
 
         _vertexArray.resize(numParticles * 6);
         _vertexArray.setPrimitiveType(sf::Triangles);
@@ -41,6 +42,19 @@ namespace town
     bool ParticleSystem::hasEnded() const
     {
         return _hasEnded;
+    }
+
+    sf::Vector2f &ParticleSystem::emissionPosition()
+    {
+        return _emissionPosition;
+    }
+    const sf::Vector2f &ParticleSystem::emissionPosition() const
+    {
+        return _emissionPosition;
+    }
+    void ParticleSystem::emissionPosition(const sf::Vector2f &position)
+    {
+        _emissionPosition = position;
     }
 
     ParticleData &ParticleSystem::data()
@@ -112,7 +126,10 @@ namespace town
                 }
             }
 
-            auto texPos = sf::Vector2f(0, 0);
+            //auto texPos = sf::Vector2f(0, 0);
+            auto sprite = _tiles->getSprite(_tileIndicies[i]);
+            auto textRect = sprite->getTextureRect();
+            auto texPos = sf::Vector2f(textRect.left, textRect.top);
             _vertexArray[vi    ].position = pos + topLeft;
             _vertexArray[vi    ].texCoords = texPos;
             _vertexArray[vi + 1].position = pos + topRight;
@@ -143,7 +160,7 @@ namespace town
 
     void ParticleSystem::restart(std::size_t index)
     {
-        _positions[index] = sf::Vector2f(50, 50);
+        _positions[index] = _emissionPosition;
 
         auto angle = _data.emissionAngles.randomValue();
         auto speed = _data.emissionSpeeds.randomValue();
@@ -151,5 +168,6 @@ namespace town
         auto dy = sin(angle) * speed;
         _velocity[index] = sf::Vector2f(dx, dy);
         _lifeLeft[index] = _data.lifeTime.randomValue();
+        _tileIndicies[index] = Utils::randi(0, _tiles->numSprites());
     }
 } // namespace town

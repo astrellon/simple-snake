@@ -98,6 +98,11 @@ namespace town
         auto apple = willHitApple(position);
         if (apple != _apples.end())
         {
+            auto particles = _engine->particleManager()->createSystem(16, "apple");
+            auto pos = calculateMapPosition(apple->position());
+            particles->emissionPosition(pos);
+            particles->data().loops = false;
+            particles->initParticles();
             _apples.erase(apple);
             return true;
         }
@@ -163,6 +168,11 @@ namespace town
         redrawMap();
     }
 
+    sf::Vector2f Map::calculateMapPosition(sf::Vector2i gridPosition) const
+    {
+        return sf::Vector2f(gridPosition) * _engine->spriteScaleCombined();
+    }
+
     void Map::update(Engine *engine, sf::Time dt)
     {
         auto &player = engine->currentSession()->player();
@@ -180,7 +190,6 @@ namespace town
     void Map::draw(Engine *engine, sf::RenderTarget &target)
     {
         auto scale = engine->spriteScale();
-        auto combinedScale = engine->spriteScaleCombined();
 
         target.draw(_mapVerticies, _tileMap->texture());
 
@@ -190,8 +199,8 @@ namespace town
             appleSprite.setScale(scale, scale);
             for (const auto &apple : _apples)
             {
-                auto pos = sf::Vector2f(apple.position());
-                appleSprite.setPosition(pos * combinedScale);
+                auto pos = calculateMapPosition(apple.position());
+                appleSprite.setPosition(pos);
                 target.draw(appleSprite);
             }
         }

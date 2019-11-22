@@ -19,7 +19,7 @@ namespace town
 
             typedef std::map<std::string, std::unique_ptr<Tiles>> TilesMap;
 
-            Tiles *create(const std::string &name, const std::string &textureName);
+            Tiles *create(const std::string &name, const std::string &textureName, uint spriteSize = 0);
 
             const Tiles *tiles(const std::string &name) const;
             const TilesMap &tilesMap() const;

@@ -35,7 +35,7 @@ int main()
 
     auto portalSprite1 = portalTiles->getSprite(0);
 
-    auto particles = engine.particleManager()->createSystem(10, portalTiles);
+    auto particles = engine.particleManager()->createSystem(10, "apple");
     particles->data().loops = false;
     particles->data().emissionSpeeds.max = 100;
     particles->initParticles();

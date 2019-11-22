@@ -46,6 +46,8 @@ namespace town
 
             void initTiles(const Tiles *tiles);
 
+            sf::Vector2f calculateMapPosition(sf::Vector2i gridPosition) const;
+
             void update(Engine *engine, sf::Time dt);
             void draw(Engine *engine, sf::RenderTarget &target);
 

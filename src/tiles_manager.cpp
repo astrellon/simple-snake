@@ -12,7 +12,7 @@ namespace town
 
     }
 
-    Tiles *TilesManager::create(const std::string &name, const std::string &textureName)
+    Tiles *TilesManager::create(const std::string &name, const std::string &textureName, uint spriteSize)
     {
         auto texture = _engine->textureManager()->texture(textureName);
         if (texture == nullptr)
@@ -21,10 +21,13 @@ namespace town
             return nullptr;
         }
 
-        auto spriteSize = static_cast<uint>(_engine->spriteSize());
         auto spriteScale = _engine->spriteScale();
 
         auto result = std::make_unique<Tiles>();
+        if (spriteSize == 0)
+        {
+            spriteSize = static_cast<uint>(_engine->spriteSize());
+        }
         result->init(texture, spriteSize, spriteScale);
 
         auto resultPtr = result.get();

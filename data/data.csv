@@ -13,3 +13,4 @@ texture, portalTiles, portalTiles.png
 tiles, snake, snakeTiles
 tiles, portal, portalTiles
 tiles, map, mapTiles
+tiles, apple, apple, 2
