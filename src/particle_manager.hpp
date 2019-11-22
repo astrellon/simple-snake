@@ -20,7 +20,7 @@ namespace town
 
             typedef std::vector<std::unique_ptr<ParticleSystem>> ParticlesList;
 
-            ParticleSystem *createSystem(std::size_t numParticles, Tiles *tiles);
+            ParticleSystem *createSystem(std::size_t numParticles, const Tiles *tiles);
 
             void update(sf::Time dt);
             void draw(Engine *engine, sf::RenderTarget &target);

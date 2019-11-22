@@ -151,7 +151,7 @@ namespace town
         return false;
     }
 
-    void Map::initTiles(Tiles *tiles)
+    void Map::initTiles(const Tiles *tiles)
     {
         _tileMap = tiles;
 

@@ -6,7 +6,7 @@
 
 namespace town
 {
-    ParticleSystem *ParticleManager::createSystem(std::size_t numParticles, Tiles *tiles)
+    ParticleSystem *ParticleManager::createSystem(std::size_t numParticles, const Tiles *tiles)
     {
         for (const auto &iter : _particles)
         {

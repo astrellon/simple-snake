@@ -53,13 +53,14 @@ namespace town
 
         const sf::Vector2f halfSize(size * 0.5f, size * 0.5f);
 
-        auto sprite = engine->portalTiles()->getSprite(index);
-        sprite->setOrigin(halfSize);
+        auto sprite = engine->tilesManager()->tiles("portal")->getSprite(index);
+        sf::Sprite drawSprite(*sprite);
+        drawSprite.setOrigin(halfSize);
 
         auto pos = (sf::Vector2f(position) * combinedScale) + (halfSize * scale);
-        sprite->setPosition(pos);
-        sprite->setRotation(rotation);
+        drawSprite.setPosition(pos);
+        drawSprite.setRotation(rotation);
 
-        target.draw(*sprite);
+        target.draw(drawSprite);
     }
 } // namespace town

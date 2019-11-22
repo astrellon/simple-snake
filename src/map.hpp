@@ -44,7 +44,7 @@ namespace town
             void addPortal(sf::Vector2i pos1, sf::Vector2i pos2);
             bool willHitPortal(sf::Vector2i pos1, sf::Vector2i *result);
 
-            void initTiles(Tiles *tiles);
+            void initTiles(const Tiles *tiles);
 
             void update(Engine *engine, sf::Time dt);
             void draw(Engine *engine, sf::RenderTarget &target);
@@ -56,7 +56,7 @@ namespace town
             MapData _data;
             AppleList _apples;
             PortalList _portals;
-            Tiles *_tileMap;
+            const Tiles *_tileMap;
             Engine *_engine;
 
             sf::Time _lastSpawnTime;

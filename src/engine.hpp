@@ -7,6 +7,7 @@
 #include "particle_manager.hpp"
 #include "tiles.hpp"
 #include "snake.hpp"
+#include "tiles_manager.hpp"
 
 #include <SFML/Graphics.hpp>
 
@@ -25,17 +26,13 @@ namespace town
             const TextureManager *textureManager() const;
             const MapManager *mapManager() const;
             const ParticleManager *particleManager() const;
-            const Tiles *mapTiles() const;
-            const Tiles *snakeTiles() const;
-            const Tiles *portalTiles() const;
+            const TilesManager *tilesManager() const;
 
             FontManager *fontManager();
             TextureManager *textureManager();
             MapManager *mapManager();
             ParticleManager *particleManager();
-            Tiles *mapTiles();
-            Tiles *snakeTiles();
-            Tiles *portalTiles();
+            TilesManager *tilesManager();
 
             float spriteScale() const;
             void spriteScale(float scale);
@@ -67,9 +64,7 @@ namespace town
             std::unique_ptr<TextureManager> _textureManager;
             std::unique_ptr<MapManager> _mapManager;
             std::unique_ptr<ParticleManager> _particleManager;
-            std::unique_ptr<Tiles> _mapTiles;
-            std::unique_ptr<Tiles> _snakeTiles;
-            std::unique_ptr<Tiles> _portalTiles;
+            std::unique_ptr<TilesManager> _tilesManager;
 
             float _spriteScale;
             float _spriteSize;

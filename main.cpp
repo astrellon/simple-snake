@@ -26,21 +26,12 @@ int main()
     auto textureManager = engine.textureManager();
 
     auto sansFont = engine.fontManager()->font("sans");
-    auto tileTexture = textureManager->texture("mapTiles");
-    auto snakeTexture = textureManager->texture("snakeTiles");
-    auto portalTexture = textureManager->texture("portalTiles");
 
     auto spriteSize = static_cast<uint>(engine.spriteSize());
     auto spriteScale = engine.spriteScale();
 
-    auto mapTiles = engine.mapTiles();
-    mapTiles->init(tileTexture, spriteSize, spriteScale);
-
-    auto snakeTiles = engine.snakeTiles();
-    snakeTiles->init(snakeTexture, spriteSize, spriteScale);
-
-    auto portalTiles = engine.portalTiles();
-    portalTiles->init(portalTexture, spriteSize, spriteScale);
+    auto mapTiles = engine.tilesManager()->tiles("map");
+    auto portalTiles = engine.tilesManager()->tiles("portal");
 
     auto portalSprite1 = portalTiles->getSprite(0);
 

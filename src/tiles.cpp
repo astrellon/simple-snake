@@ -39,6 +39,16 @@ namespace town
         return _sprites[index].get();
     }
 
+    const sf::Sprite *Tiles::getSprite(uint index) const
+    {
+        if (_sprites.size() <= index)
+        {
+            return nullptr;
+        }
+
+        return _sprites[index].get();
+    }
+
     sf::Vector2f Tiles::getSpritePosition(uint index) const
     {
         if (_sprites.size() <= index)

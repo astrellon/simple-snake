@@ -19,12 +19,12 @@ namespace town
             typedef std::vector<float> Times;
             typedef std::vector<bool> Booleans;
 
-            ParticleSystem(std::size_t numParticles, Tiles *tiles);
+            ParticleSystem(std::size_t numParticles, const Tiles *tiles);
 
             void initParticles();
 
             std::size_t numParticles() const;
-            Tiles *tiles() const;
+            const Tiles *tiles() const;
             bool hasEnded() const;
 
             ParticleData &data();
@@ -45,7 +45,7 @@ namespace town
 
             bool _hasEnded;
 
-            Tiles *_tiles;
+            const Tiles *_tiles;
             sf::VertexArray _vertexArray;
 
             void restart(std::size_t index);

@@ -17,9 +17,7 @@ namespace town
         _textureManager = std::make_unique<TextureManager>();
         _mapManager = std::make_unique<MapManager>(this);
         _particleManager = std::make_unique<ParticleManager>();
-        _mapTiles = std::make_unique<Tiles>();
-        _snakeTiles = std::make_unique<Tiles>();
-        _portalTiles = std::make_unique<Tiles>();
+        _tilesManager = std::make_unique<TilesManager>(this);
     }
     Engine::~Engine()
     {
@@ -46,17 +44,9 @@ namespace town
         return _particleManager.get();
     }
 
-    const Tiles *Engine::mapTiles() const
+    const TilesManager *Engine::tilesManager() const
     {
-        return _mapTiles.get();
-    }
-    const Tiles *Engine::snakeTiles() const
-    {
-        return _snakeTiles.get();
-    }
-    const Tiles *Engine::portalTiles() const
-    {
-        return _portalTiles.get();
+        return _tilesManager.get();
     }
 
     FontManager *Engine::fontManager()
@@ -79,17 +69,9 @@ namespace town
         return _particleManager.get();
     }
 
-    Tiles *Engine::mapTiles()
+    TilesManager *Engine::tilesManager()
     {
-        return _mapTiles.get();
-    }
-    Tiles *Engine::snakeTiles()
-    {
-        return _snakeTiles.get();
-    }
-    Tiles *Engine::portalTiles()
-    {
-        return _portalTiles.get();
+        return _tilesManager.get();
     }
 
     float Engine::spriteScale() const
@@ -142,6 +124,10 @@ namespace town
             else if (tokens[0] == "texture")
             {
                 _textureManager->loadTexture(tokens[1], "data/" + tokens[2]);
+            }
+            else if (tokens[0] == "tiles")
+            {
+                _tilesManager->create(tokens[1], tokens[2]);
             }
             else
             {

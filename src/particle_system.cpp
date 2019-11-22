@@ -7,7 +7,7 @@
 
 namespace town
 {
-    ParticleSystem::ParticleSystem(std::size_t numParticles, Tiles *tiles) : _tiles(tiles), _hasEnded(false)
+    ParticleSystem::ParticleSystem(std::size_t numParticles, const Tiles *tiles) : _tiles(tiles), _hasEnded(false)
     {
         _positions.resize(numParticles);
         _velocity.resize(numParticles);
@@ -33,7 +33,7 @@ namespace town
         return _positions.size();
     }
 
-    Tiles *ParticleSystem::tiles() const
+    const Tiles *ParticleSystem::tiles() const
     {
         return _tiles;
     }

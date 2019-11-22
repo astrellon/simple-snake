@@ -14,6 +14,8 @@ namespace town
             void init(const sf::Texture *texture, uint spriteSize, float spriteScale);
 
             sf::Sprite *getSprite(uint index);
+            const sf::Sprite *getSprite(uint index)const ;
+
             sf::Vector2f getSpritePosition(uint index) const;
             sf::Vector2f getSpritePosition(uint x, uint y) const;
             const sf::Texture *texture() const;

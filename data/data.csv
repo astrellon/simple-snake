@@ -1,8 +1,15 @@
-# Data CSV File
-# type, name, filepath
+# Data CSV File for Snake
+# Font, name, file_path
 font, sans, NotoSans-Regular.ttf
+
+# Textures, name, file_path
 texture, mapTiles, tiles.png
 texture, snake, snake.png
 texture, snakeTiles, snakeTiles.png
 texture, apple, apple.png
 texture, portalTiles, portalTiles.png
+
+# Tiles, name, texture_name
+tiles, snake, snakeTiles
+tiles, portal, portalTiles
+tiles, map, mapTiles
