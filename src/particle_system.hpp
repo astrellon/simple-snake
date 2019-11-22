@@ -24,11 +24,14 @@ namespace town
             void initParticles();
 
             std::size_t numParticles() const;
+            Tiles *tiles() const;
             bool hasEnded() const;
 
             ParticleData &data();
             const ParticleData &data() const;
             void data(const ParticleData &data);
+
+            void restart();
 
             void update(sf::Time dt);
             void draw(Engine *engine, sf::RenderTarget &target);

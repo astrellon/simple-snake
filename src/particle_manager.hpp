@@ -27,5 +27,7 @@ namespace town
 
         private:
             ParticlesList _particles;
+
+            void removeUnusedSystems();
     };
 } // town

@@ -8,6 +8,19 @@ namespace town
 {
     ParticleSystem *ParticleManager::createSystem(std::size_t numParticles, Tiles *tiles)
     {
+        for (const auto &iter : _particles)
+        {
+            if (!iter->hasEnded())
+            {
+                continue;
+            }
+
+            if (iter->numParticles() == numParticles && iter->tiles() == tiles)
+            {
+                iter->initParticles();
+                return iter.get();
+            }
+        }
         auto result = std::make_unique<ParticleSystem>(numParticles, tiles);
         auto ptrResult = result.get();
         _particles.emplace_back(std::move(result));
@@ -20,15 +33,6 @@ namespace town
         {
             iter->update(dt);
         }
-
-        for (auto i = 0; i < _particles.size(); i++)
-        {
-            if (_particles[i]->hasEnded())
-            {
-                _particles.erase(_particles.begin() + i);
-                i--;
-            }
-        }
     }
 
     void ParticleManager::draw(Engine *engine, sf::RenderTarget &target)
@@ -36,6 +40,18 @@ namespace town
         for (auto &iter : _particles)
         {
             iter->draw(engine, target);
+        }
+    }
+
+    void ParticleManager::removeUnusedSystems()
+    {
+        for (auto i = 0; i < _particles.size(); i++)
+        {
+            if (_particles[i]->hasEnded())
+            {
+                _particles.erase(_particles.begin() + i);
+                i--;
+            }
         }
     }
 } // namespace town

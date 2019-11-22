@@ -19,6 +19,8 @@ namespace town
 
     void ParticleSystem::initParticles()
     {
+        _hasEnded = false;
+
         auto num = numParticles();
         for (auto i = 0; i < num; i++)
         {
@@ -29,6 +31,11 @@ namespace town
     std::size_t ParticleSystem::numParticles() const
     {
         return _positions.size();
+    }
+
+    Tiles *ParticleSystem::tiles() const
+    {
+        return _tiles;
     }
 
     bool ParticleSystem::hasEnded() const
