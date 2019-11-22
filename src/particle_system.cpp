@@ -7,11 +7,11 @@
 
 namespace town
 {
-    ParticleSystem::ParticleSystem(std::size_t numParticles, Tiles *tiles) : _tiles(tiles)
+    ParticleSystem::ParticleSystem(std::size_t numParticles, Tiles *tiles) : _tiles(tiles), _hasEnded(false)
     {
         _positions.resize(numParticles);
         _velocity.resize(numParticles);
-        _ages.resize(numParticles);
+        _lifeLeft.resize(numParticles);
 
         _vertexArray.resize(numParticles * 6);
         _vertexArray.setPrimitiveType(sf::Triangles);
@@ -46,12 +46,18 @@ namespace town
 
     void ParticleSystem::update(sf::Time dt)
     {
+        if (_hasEnded)
+        {
+            return;
+        }
+
         auto num = numParticles();
 
+        auto dtSeconds = dt.asSeconds();
         for (auto i = 0; i < num; i++)
         {
-            _ages[i] += dt;
-            if (_ages[i] > _data.lifeTime && _data.loops)
+            _lifeLeft[i] -= dtSeconds;
+            if (_lifeLeft[i] <= 0.0f && _data.loops)
             {
                 restart(i);
             }
@@ -70,13 +76,15 @@ namespace town
         sf::Vector2f texBottomRight(spriteSize, spriteSize);
         auto seconds = dt.asSeconds();
 
+        auto hasAlive = false;
+
         for (auto i = 0, vi = 0; i < num; i++, vi += 6)
         {
             auto pos = (_positions[i] += _velocity[i] * seconds);
             if (!_data.loops)
             {
-                auto age = _ages[i];
-                if (age > _data.lifeTime)
+                auto age = _lifeLeft[i];
+                if (age <= 0.0f)
                 {
                     for (auto j = 0; j < 6; j++)
                     {
@@ -85,6 +93,10 @@ namespace town
                     }
 
                     continue;
+                }
+                else
+                {
+                    hasAlive = true;
                 }
             }
 
@@ -103,10 +115,17 @@ namespace town
             _vertexArray[vi + 5].position = pos + bottomLeft;
             _vertexArray[vi + 5].texCoords = texPos + texBottomLeft;
         }
+
+        _hasEnded = !hasAlive;
     }
 
     void ParticleSystem::draw(Engine *engine, sf::RenderTarget &target)
     {
+        if (_hasEnded)
+        {
+            return;
+        }
+
         target.draw(_vertexArray, _tiles->texture());
     }
 
@@ -119,6 +138,6 @@ namespace town
         auto dx = cos(angle) * speed;
         auto dy = sin(angle) * speed;
         _velocity[index] = sf::Vector2f(dx, dy);
-        _ages[index] = sf::microseconds(0);
+        _lifeLeft[index] = _data.lifeTime.randomValue();
     }
 } // namespace town

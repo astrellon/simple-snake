@@ -16,7 +16,7 @@ namespace town
     {
         public:
             typedef std::vector<sf::Vector2f> Vectors;
-            typedef std::vector<sf::Time> Times;
+            typedef std::vector<float> Times;
             typedef std::vector<bool> Booleans;
 
             ParticleSystem(std::size_t numParticles, Tiles *tiles);
@@ -32,12 +32,16 @@ namespace town
             void update(sf::Time dt);
             void draw(Engine *engine, sf::RenderTarget &target);
 
+            bool hasEnded() const;
+
         private:
             Vectors _positions;
             Vectors _velocity;
-            Times _ages;
+            Times _lifeLeft;
 
             ParticleData _data;
+
+            bool _hasEnded;
 
             Tiles *_tiles;
             sf::VertexArray _vertexArray;

@@ -12,9 +12,9 @@ namespace town
             ParticleData();
 
             bool loops;
-            sf::Time lifeTime;
 
             Range emissionAngles;
             Range emissionSpeeds;
+            Range lifeTime;
     };
 } // town
