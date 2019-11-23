@@ -6,8 +6,8 @@
 #include <SFML/System.hpp>
 #include <SFML/Graphics.hpp>
 
-#include "non_copyable.hpp"
-#include "particle_system.hpp"
+#include "../non_copyable.hpp"
+#include "../particle_system.hpp"
 
 namespace town
 {

@@ -2,8 +2,8 @@
 
 #include <iostream>
 
-#include "particle_system.hpp"
-#include "engine.hpp"
+#include "../particle_system.hpp"
+#include "../engine.hpp"
 
 namespace town
 {

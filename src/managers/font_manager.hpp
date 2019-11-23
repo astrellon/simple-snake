@@ -5,7 +5,7 @@
 #include <string>
 #include <map>
 
-#include "non_copyable.hpp"
+#include "../non_copyable.hpp"
 
 namespace town
 {

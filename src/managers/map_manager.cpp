@@ -2,8 +2,8 @@
 
 #include <iostream>
 
-#include "engine.hpp"
-#include "utils.hpp"
+#include "../engine.hpp"
+#include "../utils.hpp"
 
 namespace town
 {

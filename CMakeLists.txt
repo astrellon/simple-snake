@@ -6,7 +6,8 @@ project(Snake)
 # set(SFML_STATIC_LIBRARIES TRUE)
 
 file(GLOB town_src
-    "src/*.cpp"
+    "src/*.cpp",
+    "src/managers/*.cpp"
 )
 
 add_executable(Snake main.cpp ${town_src})

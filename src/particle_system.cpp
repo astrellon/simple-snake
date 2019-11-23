@@ -126,7 +126,6 @@ namespace town
                 }
             }
 
-            //auto texPos = sf::Vector2f(0, 0);
             auto sprite = _tiles->getSprite(_tileIndicies[i]);
             auto textRect = sprite->getTextureRect();
             auto texPos = sf::Vector2f(textRect.left, textRect.top);

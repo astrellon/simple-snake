@@ -1,13 +1,13 @@
 #pragma once
 
-#include "non_copyable.hpp"
-#include "font_manager.hpp"
-#include "texture_manager.hpp"
-#include "map_manager.hpp"
-#include "particle_manager.hpp"
+#include "managers/font_manager.hpp"
+#include "managers/texture_manager.hpp"
+#include "managers/map_manager.hpp"
+#include "managers/particle_manager.hpp"
+#include "managers/tiles_manager.hpp"
 #include "tiles.hpp"
 #include "snake.hpp"
-#include "tiles_manager.hpp"
+#include "non_copyable.hpp"
 
 #include <SFML/Graphics.hpp>
 

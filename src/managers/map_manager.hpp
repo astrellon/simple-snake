@@ -3,8 +3,8 @@
 #include <string>
 #include <map>
 
-#include "non_copyable.hpp"
-#include "map.hpp"
+#include "../non_copyable.hpp"
+#include "../map.hpp"
 
 namespace town
 {

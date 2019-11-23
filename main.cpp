@@ -7,7 +7,7 @@
 #include <vector>
 
 #include "src/engine.hpp"
-#include "src/font_manager.hpp"
+#include "src/managers/font_manager.hpp"
 #include "src/map.hpp"
 #include "src/tiles.hpp"
 #include "src/snake.hpp"
