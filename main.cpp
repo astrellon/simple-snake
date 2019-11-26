@@ -35,11 +35,6 @@ int main()
 
     auto portalSprite1 = portalTiles->getSprite(0);
 
-    auto particles = engine.particleManager()->createSystem(10, "apple");
-    particles->data().loops = false;
-    particles->data().emissionSpeeds.max = 100;
-    particles->initParticles();
-
     auto mapManager = engine.mapManager();
     auto map1 = mapManager->loadMap("data/testMap.csv");
     if (map1 == nullptr)
