@@ -2,6 +2,7 @@
 
 #include <iostream>
 #include <fstream>
+#include <memory>
 
 #include "utils.hpp"
 #include "map.hpp"
