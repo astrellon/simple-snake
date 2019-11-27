@@ -116,10 +116,6 @@ namespace town
 
                 auto velo = _velocity[i] * seconds * velocityMultiplier;
 
-                if (i == 0)
-                {
-                    std::cout << "Time per: [" << _velocity[i].x << ", " << _velocity[i].y << "] [" << velo.x << ", " << velo.y << "]" << std::endl;
-                }
                 pos = (_positions[i] += velo);
             }
 
