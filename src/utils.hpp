@@ -58,6 +58,11 @@ namespace town
                 return sf::Vector2f(x, y);
             }
 
+            static inline float clamp01(float t)
+            {
+                return t > 1.0f ? 1.0f : (t < 0.0f ? 0.0f: t);
+            }
+
         private:
             Utils();
 

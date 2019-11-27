@@ -12,6 +12,7 @@ namespace town
         _positions.resize(numParticles);
         _velocity.resize(numParticles);
         _lifeLeft.resize(numParticles);
+        _startingLife.resize(numParticles);
         _tileIndicies.resize(numParticles);
 
         _vertexArray.resize(numParticles * 6);
@@ -106,10 +107,24 @@ namespace town
 
         for (auto i = 0, vi = 0; i < num; i++, vi += 6)
         {
-            auto pos = (_positions[i] += _velocity[i] * seconds);
+            auto age = _lifeLeft[i];
+            sf::Vector2f pos;
+            if (age >= 0.0f)
+            {
+                auto timePercent = Utils::clamp01(_lifeLeft[i] / _startingLife[i]);
+                auto velocityMultiplier = _data.speedOverLife.get(timePercent);
+
+                auto velo = _velocity[i] * seconds * velocityMultiplier;
+
+                if (i == 0)
+                {
+                    std::cout << "Time per: [" << _velocity[i].x << ", " << _velocity[i].y << "] [" << velo.x << ", " << velo.y << "]" << std::endl;
+                }
+                pos = (_positions[i] += velo);
+            }
+
             if (!_data.loops)
             {
-                auto age = _lifeLeft[i];
                 if (age <= 0.0f)
                 {
                     for (auto j = 0; j < 6; j++)
@@ -166,7 +181,7 @@ namespace town
         auto dx = cos(angle) * speed;
         auto dy = sin(angle) * speed;
         _velocity[index] = sf::Vector2f(dx, dy);
-        _lifeLeft[index] = _data.lifeTime.randomValue();
+        _startingLife[index] = _lifeLeft[index] = _data.lifeTime.randomValue();
         _tileIndicies[index] = Utils::randi(0, _tiles->numSprites());
     }
 } // namespace town

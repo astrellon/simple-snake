@@ -47,6 +47,7 @@ namespace town
             Vectors _velocity;
             TileIndicies _tileIndicies;
             Times _lifeLeft;
+            Times _startingLife;
 
             ParticleData _data;
 

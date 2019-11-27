@@ -6,9 +6,10 @@ namespace town
 {
     ParticleData::ParticleData() :
         loops(true),
-        lifeTime(Range(2.5f, 3.5f)),
-        emissionAngles(Range(0, M_PI * 2.0)),
-        emissionSpeeds(Range(40, 70))
+        lifeTime(Range(Linear, 2.5f, 3.5f)),
+        emissionAngles(Range(Linear, 0, M_PI * 2.0)),
+        emissionSpeeds(Range(Linear, 40, 70)),
+        speedOverLife(Range(EaseOutQuart, 0.0f, 1.0f))
     {
 
     }

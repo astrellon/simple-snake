@@ -6,25 +6,34 @@
 
 namespace town
 {
-    Range::Range(float min, float max) : min(min), max(max)
+    Range::Range(RangeType rangeType, float min, float max) : min(min), max(max), _rangeType(rangeType)
     {
 
     }
 
-    int Range::randomInt(int min, int max)
+    float Range::randomValue() const
     {
-        auto diff = (float)(max - min);
-        auto value = randomValue() * diff;
-        return round(value) - min;
+        return get(Utils::randf());
     }
 
-    float Range::randomValue()
+    float Range::get(float t) const
     {
-        return Utils::randf(min, max);
+        auto easeValue = getEaseValue(t);
+        auto diff = max - min;
+        auto value = easeValue * diff;
+        return value + min;
     }
 
-    Range Range::Linear(float min, float max)
+    float Range::getEaseValue(float t) const
     {
-        return Range(min, max);
+        switch (_rangeType)
+        {
+            default:
+            case Linear: return t;
+            case EaseInQuad: return t * t;
+            case EaseOutQuad: return t * (2 - t);
+            case EaseInQuart: return t * t * t * t;
+            case EaseOutQuart: return 1-(--t) * t * t * t;
+        }
     }
 } // namespace town

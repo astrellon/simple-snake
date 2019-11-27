@@ -16,5 +16,6 @@ namespace town
             Range emissionAngles;
             Range emissionSpeeds;
             Range lifeTime;
+            Range speedOverLife;
     };
 } // town
